@@ -36,3 +36,7 @@ The project aims to develop a fully functional prototype of the Automated Bus Sc
 2. **Get into the Frontend Folder**
    ```bash
    cd frontend
+
+3. **Install the dependencies**
+   ```bash
+   npm install
