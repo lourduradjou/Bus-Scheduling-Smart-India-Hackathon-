@@ -47,7 +47,7 @@ const themeClasses = {
 const SideBar = () => {
 	return (
 		<div className='w-60 bg-[#00245c] text-gray-300  min-h-screen'>
-			<div className='w-full flex items-center justify-start p-8'>
+			<div className='w-full flex items-center justify-start p-8 bg-[#081830] opacity-90'>
 				<h1 className='text-2xl hover:text-[#ffc404] duration-300 font-semibold pl-2'>
 					NCT Delhi
 				</h1>
@@ -65,7 +65,7 @@ const SideBar = () => {
 								key={link.key}
 							>
 								{link.icon}
-								<span>{link.label}</span>
+								<span className='font-medium'>{link.label}</span>
 							</li>
 						</a>
 					))}
