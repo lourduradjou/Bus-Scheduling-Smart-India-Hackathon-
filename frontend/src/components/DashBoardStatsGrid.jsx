@@ -1,24 +1,29 @@
 import React from 'react'
 import { IoBagHandle, IoPieChart, IoPeople, IoCart } from 'react-icons/io5'
 
+import { FaBus } from "react-icons/fa";
+import { TbCoinRupeeFilled } from "react-icons/tb";
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
+import { MdOutlinePeople } from "react-icons/md";
+
 function DashboardStatsGrid() {
 	return (
 		<div className='flex gap-4'>
 			<BoxWrapper>
 				<div className='rounded-full h-12 w-12 flex items-center justify-center bg-sky-500'>
-					<IoBagHandle className='text-2xl text-white' />
+					<FaBus className='text-2xl text-white' />
 				</div>
 				<div className='pl-4'>
 					<span className='text-sm text-gray-500 font-light'>
-						Total Sales
+						Total Buses
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							$54,232
+							300
 						</strong>
-						<span className='text-sm text-green-500 pl-2'>
+						{/* <span className='text-sm text-green-500 pl-2'>
 							+343
-						</span>
+						</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
@@ -29,49 +34,66 @@ function DashboardStatsGrid() {
 				</div>
 				<div className='pl-4'>
 					<span className='text-sm text-gray-500 font-light'>
-						Total Expenses
+						Monthly Income
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							$3,423
+							₹3,423
 						</strong>
-						<span className='text-sm text-green-500 pl-2'>
+						{/* <span className='text-sm text-green-500 pl-2'>
 							-343
-						</span>
+						</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
 
 			<BoxWrapper>
 				<div className='rounded-full h-12 w-12 flex items-center justify-center bg-yellow-400'>
-					<IoPeople className='text-2xl text-white' />
+					<TbCoinRupeeFilled className='text-2xl text-white' />
 				</div>
 				<div className='pl-4'>
 					<span className='text-sm text-gray-500 font-light'>
-						Total Customers
+						Yesterday Income
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							12,313
+							₹313
 						</strong>
-						<span className='text-sm text-red-500 pl-2'>-30</span>
+						{/* <span className='text-sm text-red-500 pl-2'>-30</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
 
 			<BoxWrapper>
 				<div className='rounded-full h-12 w-12 flex items-center justify-center bg-green-600'>
-					<IoCart className='text-2xl text-white' />
+					<FaMoneyBillTrendUp className='text-2xl text-white' />
 				</div>
 				<div className='pl-4'>
 					<span className='text-sm text-gray-500 font-light'>
-						Total Orders
+						Total Profit
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							16,432
+							₹600
 						</strong>
-						<span className='text-sm text-red-500 pl-2'>-43</span>
+						{/* <span className='text-sm text-red-500 pl-2'>-43</span> */}
+					</div>
+				</div>
+			</BoxWrapper>
+
+			<BoxWrapper>
+				<div className='rounded-full h-12 w-12 flex items-center justify-center bg-green-600'>
+					<MdOutlinePeople className='text-2xl text-white' />
+				</div>
+				<div className='pl-4'>
+					<span className='text-sm text-gray-500 font-light'>
+						Total Employees
+					</span>
+					<div className='flex items-center'>
+						<strong className='text-xl text-gray-700 font-semibold'>
+							600
+						</strong>
+						{/* <span className='text-sm text-red-500 pl-2'>-43</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
