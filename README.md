@@ -32,3 +32,7 @@ The project aims to develop a fully functional prototype of the Automated Bus Sc
 1. **Clone the Repository:**
    ```bash
    git clone <repository_url>
+
+2. **Get into the Frontend Folder**
+   ```bash
+   cd frontend
