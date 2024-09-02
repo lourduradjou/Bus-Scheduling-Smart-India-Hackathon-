@@ -4,6 +4,7 @@ import DashBoard from './pages/DashBoard';
 import Login from './auth/Login'; // Assuming you have a login page
 import SignUp from './auth/SignUp'; // Assuming you have a signup page
 import MainLayout from './components/shared/MainLayout';
+import EmployeeManagement from './pages/EmployeeManagement';
 
 const App = () => {
   return (
@@ -19,6 +20,14 @@ const App = () => {
           element={
             <MainLayout>
               <DashBoard />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/employeeManagement"
+          element={
+            <MainLayout>
+              <EmployeeManagement />
             </MainLayout>
           }
         />

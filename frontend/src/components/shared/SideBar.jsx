@@ -21,7 +21,7 @@ const SIDE_BAR_LINKS = [
 	{
 		key: 'Employee Details',
 		label: 'Employees',
-		path: '/employeeDetails',
+		path: '/employeeManagement',
 		icon: <GrContactInfo />,
 	},
 	{
