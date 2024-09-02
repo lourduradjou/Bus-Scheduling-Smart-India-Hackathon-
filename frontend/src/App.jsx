@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DashBoard from './pages/DashBoard';
 import Login from './auth/Login'; // Assuming you have a login page
 import SignUp from './auth/SignUp'; // Assuming you have a signup page
+import EmployeeManagement from './components/EmployeeManagement';
 import MainLayout from './components/shared/MainLayout';
 import EmployeeManagement from './pages/EmployeeManagement';
 
@@ -13,6 +14,7 @@ const App = () => {
         {/* Public routes (without sidebar) */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/EmployeeManagement" element={<EmployeeManagement />} />
 
         {/* Protected routes (with sidebar) */}
         <Route
