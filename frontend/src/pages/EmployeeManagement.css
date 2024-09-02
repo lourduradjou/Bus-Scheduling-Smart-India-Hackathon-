@@ -1,0 +1,138 @@
+/* EmployeeManagement.css */
+
+.employee-management {
+    text-align: center;
+    margin: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  .toggle-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .table-container {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .employee-table th,
+  .employee-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .employee-table th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .employee-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .add-employee {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+  }
+  
+  input {
+    margin: 5px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .add-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-btn:hover {
+    background-color: #218838;
+  }
+  
+  .view-btn {
+    background-color: #17a2b8;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .view-btn:hover {
+    background-color: #138496;
+  }
+  
+  .delete-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c82333;
+  }
+  
+  .view-employee {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e2e3e5;
+    border-radius: 10px;
+    text-align: left;
+    display: inline-block;
+  }
+  
+  .close-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .close-btn:hover {
+    background-color: #5a6268;
+  }
+  
+  
