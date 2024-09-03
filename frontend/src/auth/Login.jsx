@@ -1,43 +1,87 @@
-import React from 'react';
-import busImage from '../assets/authImage/busImage.jpg'; // Adjust the path based on where you place the image
+import React, { useState } from 'react';
+import busImage from '../assets/authImage/bus.jpg'; 
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const validateEmail = (email) => {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+      return 'Please enter a valid email address.';
+    }
+    return '';
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const emailErrorMsg = validateEmail(email);
+    if (emailErrorMsg) {
+      setEmailError(emailErrorMsg);
+      return;
+    }
+
+    setEmailError('');
+    console.log('Form submitted with:', { email, password });
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.formContainer}>
-        <h2 style={styles.title}>Login</h2>
+        <h2 style={styles.title}>LOGIN</h2>
         <p style={styles.welcomeText}>Hi, Welcome back 👋</p>
         
         <button style={styles.googleButton}>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png" alt="Google Icon" style={styles.googleIcon} />
           Login with Google
         </button>
         
-        <p style={styles.orText}>or Login with Email</p>
+        <p style={styles.orText}>Or Login with Email</p>
         
-        <div style={styles.inputContainer}>
-          <label>Email</label>
-          <input type="email" placeholder="E.g. johndoe@email.com" style={styles.input} />
-        </div>
-        
-        <div style={styles.inputContainer}>
-          <label>Password</label>
-          <input type="password" placeholder="Enter your password" style={styles.input} />
-        </div>
-        
-        <div style={styles.optionsContainer}>
-          <div>
-            <input type="checkbox" id="rememberMe" />
-            <label htmlFor="rememberMe"> Remember Me</label>
+        <form onSubmit={handleSubmit}>
+          <div style={styles.inputContainer}>
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="E.g. john@email.com"
+              style={styles.input}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              maxLength={30} 
+              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
+              required 
+            />
+            {emailError && <p style={styles.errorText}>{emailError}</p>}
           </div>
-          <a href="#" style={styles.forgotPassword}>Forgot Password?</a>
-        </div>
-        
-        <button style={styles.loginButton}>Login</button>
-        
-        <p style={styles.signUpText}>
-          Not registered yet? <a href="#" style={styles.signUpLink}>Create an account</a>
-        </p>
+          
+          <div style={styles.inputContainer}>
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              style={styles.input}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={6} 
+              maxLength={12} 
+              required 
+            />
+          </div>
+          
+          <div style={styles.optionsContainer}>
+            <div>
+              <input type="checkbox" id="rememberMe" />
+              <label htmlFor="rememberMe"> Remember Me</label>
+            </div>
+            <a href="#" style={styles.forgotPassword}>Forgot Password?</a>
+          </div>
+          
+          <button type="submit" style={styles.loginButton}>Login</button>
+          
+          <p style={styles.signUpText}>
+            Not registered yet? <a href="/SignUp" style={styles.signUpLink}>Create an account</a>
+          </p>
+        </form>
       </div>
     </div>
   );
@@ -50,18 +94,18 @@ const styles = {
     alignItems: 'center',
     height: '100vh',
     backgroundImage: `url(${busImage})`,
-    backgroundSize: 'contain',
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
   },
   formContainer: {
-    width: '400px',
+    width: '500px',
     padding: '40px',
-    borderRadius: '8px',
-    backgroundColor: '#fff',
+    borderRadius: '13px',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
     boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
     textAlign: 'center',
-    backdropFilter: 'blur(8px)', // Optional: adds a blur effect to the background
+    backdropFilter: 'blur(8px)', 
   },
   title: {
     fontSize: '24px',
@@ -70,6 +114,9 @@ const styles = {
   },
   welcomeText: {
     marginBottom: '20px',
+    fontFamily: 'Georgia, serif',
+    fontSize: '20px', 
+    fontStyle: 'italic', 
   },
   googleButton: {
     width: '100%',
@@ -81,14 +128,9 @@ const styles = {
     marginBottom: '15px',
     cursor: 'pointer',
   },
-  googleIcon: {
-    width: '20px',
-    marginRight: '8px',
-    verticalAlign: 'middle',
-  },
   orText: {
     marginBottom: '20px',
-    color: '#555',
+    color: '#fff',
   },
   inputContainer: {
     marginBottom: '15px',
@@ -108,7 +150,7 @@ const styles = {
   },
   forgotPassword: {
     textDecoration: 'none',
-    color: '#4285F4',
+    color: '#57030b',
   },
   loginButton: {
     width: '100%',
@@ -121,11 +163,17 @@ const styles = {
     marginBottom: '20px',
   },
   signUpText: {
-    color: '#555',
+    color: 'black',
   },
   signUpLink: {
     textDecoration: 'none',
-    color: '#4285F4',
+    color: '#57030b',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: '12px',
+    marginTop: '5px',
+    textAlign: 'left',
   },
 };
 
