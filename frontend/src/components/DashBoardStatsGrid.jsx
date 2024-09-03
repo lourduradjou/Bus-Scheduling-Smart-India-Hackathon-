@@ -1,12 +1,32 @@
-import React from 'react'
-import { IoBagHandle, IoPieChart, IoPeople, IoCart } from 'react-icons/io5'
-
-import { FaBus } from "react-icons/fa";
-import { TbCoinRupeeFilled } from "react-icons/tb";
-import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { MdOutlinePeople } from "react-icons/md";
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { IoPieChart } from 'react-icons/io5'
+import { FaBus, FaMoneyBillTrendUp } from 'react-icons/fa6'
+import { TbCoinRupeeFilled } from 'react-icons/tb'
+import { MdOutlinePeople } from 'react-icons/md'
 
 function DashboardStatsGrid() {
+	const [stats, setStats] = useState({
+		totalBuses: 0,
+		monthlyIncome: 0,
+		yesterdayIncome: 0,
+		totalProfit: 0,
+		totalEmployees: 0,
+	})
+
+	useEffect(() => {
+		// Fetch the stats from the backend API
+		axios
+			.get('https://mocki.io/v1/e67f6d02-085f-4ba4-9a3a-6c27a4c9bcf9') // Replace with your actual API endpoint
+			.then((response) => {
+				setStats(response.data)
+				console.log(response)
+			})
+			.catch((error) => {
+				console.error('There was an error fetching the stats!', error)
+			})
+	}, [])
+
 	return (
 		<div className='flex gap-4'>
 			<BoxWrapper>
@@ -19,11 +39,8 @@ function DashboardStatsGrid() {
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							300
+							{stats.totalBuses}
 						</strong>
-						{/* <span className='text-sm text-green-500 pl-2'>
-							+343
-						</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
@@ -38,11 +55,8 @@ function DashboardStatsGrid() {
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							₹3,423
+							₹{stats.monthlyIncome}
 						</strong>
-						{/* <span className='text-sm text-green-500 pl-2'>
-							-343
-						</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
@@ -57,9 +71,8 @@ function DashboardStatsGrid() {
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							₹313
+							₹{stats.yesterdayIncome}
 						</strong>
-						{/* <span className='text-sm text-red-500 pl-2'>-30</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
@@ -74,9 +87,8 @@ function DashboardStatsGrid() {
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							₹600
+							₹{stats.totalProfit}
 						</strong>
-						{/* <span className='text-sm text-red-500 pl-2'>-43</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
@@ -91,9 +103,8 @@ function DashboardStatsGrid() {
 					</span>
 					<div className='flex items-center'>
 						<strong className='text-xl text-gray-700 font-semibold'>
-							600
+							{stats.totalEmployees}
 						</strong>
-						{/* <span className='text-sm text-red-500 pl-2'>-43</span> */}
 					</div>
 				</div>
 			</BoxWrapper>
@@ -103,7 +114,7 @@ function DashboardStatsGrid() {
 
 function BoxWrapper({ children }) {
 	return (
-		<div className='bg-white rounded-xl px-10 py-6 flex-1 border border-gray-200 flex items-center hover:scale-105 duration-300 '>
+		<div className='bg-white rounded-xl px-10 py-6 flex-1 border border-gray-200 flex items-center hover:scale-105 duration-300'>
 			{children}
 		</div>
 	)
