@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import busImage from '../assets/authImage/busimg.jpg'; 
+import { Navigate, useNavigate } from 'react-router-dom';
+import api from '../api';
 
 function SignUp() {
   const [username, setUsername] = useState('');
@@ -12,7 +14,7 @@ function SignUp() {
     password: '',
     confirmPassword: ''
   });
-
+  const navigate = useNavigate()
   const validateEmail = (email) => {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailPattern.test(email) ? '' : 'Please enter a valid email address.';
@@ -63,10 +65,21 @@ function SignUp() {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       console.log('Form submitted with:', { username, email, password });
+    }
+
+    try{
+      if (validateForm()){
+        const res = await api.post("/api/user/register/",{username,email,password})
+        navigate("/login")
+
+      }
+    }
+    catch(error){
+      alert("USER NAME ALREADY EXISTS")
     }
   };
 
@@ -91,7 +104,7 @@ function SignUp() {
               style={styles.input}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              maxLength={15} // Limit input to 15 characters
+              maxLength={15} 
             />
             {errors.username && <p style={styles.errorText}>{errors.username}</p>}
           </div>

@@ -1,29 +1,43 @@
 import React, { useState } from 'react';
 import busImage from '../assets/authImage/bus.jpg'; 
+import { useNavigate } from 'react-router-dom';
+import api from '../api';
 
 function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const validateEmail = (email) => {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
-      return 'Please enter a valid email address.';
+  const [usernameError, setUsernameError] = useState('');
+
+  const validateUsername = (username) => {
+    const usernamePattern = /^[a-zA-Z0-9_.-]{3,}$/; 
+    if (!usernamePattern.test(username)) {
+      return 'Please enter a valid username.';
     }
     return '';
   };
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const emailErrorMsg = validateEmail(email);
-    if (emailErrorMsg) {
-      setEmailError(emailErrorMsg);
+    const usernameErrorMsg = validateUsername(username);
+    if (usernameErrorMsg) {
+      setUsernameError(usernameErrorMsg);
       return;
     }
 
-    setEmailError('');
-    console.log('Form submitted with:', { email, password });
+    setUsernameError('');
+    console.log('Form submitted with:', { username, password });
+
+    try {
+      const res = await api.post("api/token/", { username, password });
+      localStorage.setItem('access', res.data.access);
+      localStorage.setItem('refresh', res.data.refresh);
+      navigate("/");
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -36,22 +50,21 @@ function Login() {
           Login with Google
         </button>
         
-        <p style={styles.orText}>Or Login with Email</p>
+        <p style={styles.orText}>Or Login with Username</p>
         
         <form onSubmit={handleSubmit}>
           <div style={styles.inputContainer}>
-            <label>Email</label>
+            <label>Username</label>
             <input
-              type="email"
-              placeholder="E.g. john@email.com"
+              type="text"
+              placeholder="E.g. john_doe"
               style={styles.input}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              maxLength={30} 
-              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
-              required 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              maxLength={30}
+              required
             />
-            {emailError && <p style={styles.errorText}>{emailError}</p>}
+            {usernameError && <p style={styles.errorText}>{usernameError}</p>}
           </div>
           
           <div style={styles.inputContainer}>
@@ -62,9 +75,9 @@ function Login() {
               style={styles.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              minLength={6} 
-              maxLength={12} 
-              required 
+              minLength={6}
+              maxLength={12}
+              required
             />
           </div>
           

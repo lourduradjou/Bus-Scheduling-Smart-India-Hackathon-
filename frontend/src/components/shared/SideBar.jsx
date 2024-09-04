@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { RxDashboard } from 'react-icons/rx'
 import { MdContentPasteSearch } from 'react-icons/md'
 import { GrContactInfo } from 'react-icons/gr'
 import { GrMapLocation } from 'react-icons/gr'
 import { TbLogout2 } from 'react-icons/tb'
+
+
 
 const SIDE_BAR_LINKS = [
 	{
@@ -36,7 +38,8 @@ const SIDE_BAR_LINKS = [
 const LOGOUT_LINK = {
 	key: 'auth',
 	label: 'Logout',
-	path: '/logout',
+	// once logout is clicked,it will redirect to login page and clears the access token in the localStorage
+	path: '/login',    
 	icon: <TbLogout2 />,
 	theme: 'red',
 }
@@ -50,7 +53,12 @@ const SideBar = () => {
 	const [activeLink, setActiveLink] = useState(SIDE_BAR_LINKS[0].key)
 
 	const handleLinkClick = (key) => {
-		setActiveLink(key)
+		if (key === LOGOUT_LINK.key) {
+			localStorage.clear()
+			Navigate(LOGOUT_LINK.path)
+		} else {
+			setActiveLink(key)
+		}
 	}
 
 	return (
