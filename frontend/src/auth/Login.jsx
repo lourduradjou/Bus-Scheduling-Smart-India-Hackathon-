@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
 
-  const validateUsername = (username) => {
-    const usernamePattern = /^[a-zA-Z0-9_.-]{3,}$/; 
-    if (!usernamePattern.test(username)) {
-      return 'Please enter a valid username.';
+  const validateUsername = (phoneNumber) => {
+    const usernamePattern = /^\d{10}$/; 
+    if (!usernamePattern.test(phoneNumber)) {
+      return 'Please enter a valid Phone Number.';
     }
     return '';
   };
@@ -22,17 +22,17 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const usernameErrorMsg = validateUsername(username);
+    const usernameErrorMsg = validateUsername(phoneNumber);
     if (usernameErrorMsg) {
-      setUsernameError(usernameErrorMsg);
+      setPhoneNumberError(usernameErrorMsg);
       return;
     }
 
-    setUsernameError('');
-    console.log('Form submitted with:', { username, password });
+    setPhoneNumberError('');
+    console.log('Form submitted with:', { phoneNumber, password });
 
     try {
-      const res = await api.post("api/token/", { username, password });
+      const res = await api.post("api/token/", { username: phoneNumber, password });
       localStorage.setItem('access', res.data.access);
       localStorage.setItem('refresh', res.data.refresh);
       navigate("/");
@@ -51,21 +51,21 @@ function Login() {
           Login with Google
         </button>
         
-        <p style={styles.orText}>Or Login with Username</p>
+        <p style={styles.orText}>Or Login with Phone Number</p>
         
         <form onSubmit={handleSubmit}>
           <div style={styles.inputContainer}>
-            <label>Username</label>
+            <label>Phone Number</label>
             <input
               type="text"
-              placeholder="E.g. john_doe"
+              placeholder="E.g. 1234567890"
               style={styles.input}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               maxLength={30}
               required
             />
-            {usernameError && <p style={styles.errorText}>{usernameError}</p>}
+            {phoneNumberError && <p style={styles.errorText}>{phoneNumberError}</p>}
           </div>
           
           <div style={styles.inputContainer}>

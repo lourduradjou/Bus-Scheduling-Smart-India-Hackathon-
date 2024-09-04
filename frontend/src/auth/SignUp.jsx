@@ -4,12 +4,12 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import api from '../api';
 
 function SignUp() {
-  const [username, setUsername] = useState('');
+  const [phoneNumber, setphoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({
-    username: '',
+    phoneNumber: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -20,21 +20,21 @@ function SignUp() {
     return emailPattern.test(email) ? '' : 'Please enter a valid email address.';
   };
 
-  const validateUsername = (username) => {
-    const usernamePattern = /^[a-zA-Z0-9_-]+$/;
-    return usernamePattern.test(username) ? '' : 'Username can only contain letters, numbers, underscores, and hyphens.';
+  const validatephoneNumber = (phoneNumber) => {
+    const phoneNumberPattern = /^\d{10}$/
+    return phoneNumberPattern.test(phoneNumber) ? '' : 'Phone Number can consists only of 10 digits';
   };
   const validateForm = () => {
     let isValid = true;
-    const newErrors = { username: '', email: '', password: '', confirmPassword: '' };
+    const newErrors = { phoneNumber: '', email: '', password: '', confirmPassword: '' };
 
-    if (username.length < 8 || username.length > 15) {
-      newErrors.username = 'Username must be between 8 and 15 characters long.';
+    if (phoneNumber.length < 8 || phoneNumber.length > 15) {
+      newErrors.phoneNumber = 'phoneNumber must be between 8 and 15 characters long.';
       isValid = false;
     } else {
-      const usernameError = validateUsername(username);
-      if (usernameError) {
-        newErrors.username = usernameError;
+      const phoneNumberError = validatephoneNumber(phoneNumber);
+      if (phoneNumberError) {
+        newErrors.phoneNumber = phoneNumberError;
         isValid = false;
       }
     }
@@ -68,12 +68,12 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted with:', { username, email, password });
+      console.log('Form submitted with:', { phoneNumber, email, password });
     }
 
     try{
       if (validateForm()){
-        const res = await api.post("/api/user/register/",{username,email,password})
+        const res = await api.post("/api/user/register/",{phoneNumber,email,password})
         navigate("/login")
 
       }
@@ -93,20 +93,20 @@ function SignUp() {
           Sign Up with Google
         </button>
         
-        <p style={styles.orText}>Or Sign Up with Email</p>
+        <p style={styles.orText}>Or Sign Up with Phone Number</p>
         
         <form onSubmit={handleSubmit}>
           <div style={styles.inputContainer}>
-            <label>Username</label>
+            <label>Phone Number</label>
             <input
               type="text"
-              placeholder="Choose a username"
+              placeholder="Enter the Phone Number"
               style={styles.input}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={phoneNumber}
+              onChange={(e) => setphoneNumber(e.target.value)}
               maxLength={15} 
             />
-            {errors.username && <p style={styles.errorText}>{errors.username}</p>}
+            {errors.phoneNumber && <p style={styles.errorText}>{errors.phoneNumber}</p>}
           </div>
 
           <div style={styles.inputContainer}>
