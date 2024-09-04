@@ -123,7 +123,7 @@ function DashboardCharts() {
 						/>
 						<Legend />
 						<Bar dataKey='revenue' fill='#8338ec' stackId='a' />
-						<Bar dataKey='expense' fill='#3a86ff' stackId='a' />
+						<Bar dataKey='expense' fill='#facc15' stackId='a' />
 						
 					</BarChart>
 				</ResponsiveContainer>

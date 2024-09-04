@@ -60,7 +60,7 @@ const SideBar = () => {
 	}
 
 	return (
-		<div className='fixed top-0 left-0 w-[16%] bg-[#00245c] text-gray-300 min-h-screen flex flex-col justify-between'>
+		<div className='fixed top-0 left-0 w-[16%] bg-[#320d4b] text-gray-300 min-h-screen flex flex-col justify-between'>
 			<div>
 				<div className='w-full flex items-center justify-start p-8 bg-[#081830] opacity-90'>
 					<h1 className='md:text-2xl wide:text-3xl xl hover:text-[#ffc404] duration-300 font-semibold pl-2'>

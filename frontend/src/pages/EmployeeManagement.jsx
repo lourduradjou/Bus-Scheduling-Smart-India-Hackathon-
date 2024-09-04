@@ -170,7 +170,7 @@ const EmployeeManagement = () => {
 								<td>{employee.shiftEnd}</td>
 								<td>
 									<button
-										className='view-btn'
+										className='view-btn transition-transform duration-300 active:scale-95 tracking-wider'
 										onClick={() =>
 											handleEditEmployee(employee)
 										}
@@ -178,7 +178,7 @@ const EmployeeManagement = () => {
 										Edit
 									</button>
 									<button
-										className='delete-btn'
+										className='delete-btn transition-transform tracking-wider active:scale-95 duration-300'
 										onClick={() =>
 											handleDeleteEmployee(employee.id)
 										}
