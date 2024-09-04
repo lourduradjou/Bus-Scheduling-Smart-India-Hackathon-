@@ -1,138 +1,272 @@
-// EmployeeManagement.js
-import React, { useState } from 'react';
-import './EmployeeManagement.css'; // Import the CSS file for styling
+import React, { useState } from 'react'
+import './EmployeeManagement.css' // Import the CSS file for styling
+import axios from 'axios' // Import axios for API requests
 
 // Main Employee Management Component
 const EmployeeManagement = () => {
-  const [showTable, setShowTable] = useState(false); // State to toggle table visibility
-  const [employees, setEmployees] = useState([]); // State to store employee list
-  const [newEmployee, setNewEmployee] = useState({ name: '', position: '', email: '' }); // State for new employee input
-  const [viewEmployee, setViewEmployee] = useState(null); // State to view employee details
+	// Initial employees data
+	const [employees, setEmployees] = useState([
+		{
+			id: 1,
+			userName: 'John Doe',
+			phoneNumber: '123-456-7890',
+			shift: 'Morning',
+			shiftStart: '08:00 AM',
+			shiftEnd: '02:00 PM',
+		},
+		{
+			id: 2,
+			userName: 'Jane Smith',
+			phoneNumber: '987-654-3210',
+			shift: 'Afternoon',
+			shiftStart: '02:00 PM',
+			shiftEnd: '08:00 PM',
+		},
+		{
+			id: 3,
+			userName: 'Alice Johnson',
+			phoneNumber: '456-789-1230',
+			shift: 'Night',
+			shiftStart: '08:00 PM',
+			shiftEnd: '02:00 AM',
+		},
+		{
+			id: 4,
+			userName: 'Bob Brown',
+			phoneNumber: '321-654-9870',
+			shift: 'Morning',
+			shiftStart: '08:00 AM',
+			shiftEnd: '02:00 PM',
+		},
+		{
+			id: 5,
+			userName: 'Charlie Davis',
+			phoneNumber: '654-321-0987',
+			shift: 'Afternoon',
+			shiftStart: '02:00 PM',
+			shiftEnd: '08:00 PM',
+		},
+	]) // State to store employee list
 
-  // Toggle the visibility of the employee table
-  const handleToggleTable = () => {
-    setShowTable(!showTable);
-  };
+	const [newEmployee, setNewEmployee] = useState({
+		userName: '',
+		phoneNumber: '',
+		shift: '',
+		shiftStart: '',
+		shiftEnd: '',
+	}) // State for new employee input
+	const [editEmployeeId, setEditEmployeeId] = useState(null) // State for the employee being edited
+	const [showModal, setShowModal] = useState(false) // State to control modal visibility
 
-  // Handle input change for new employee form
-  const handleInputChange = (e) => {
-    setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value });
-  };
+	// Handle input change for employee form
+	const handleInputChange = (e) => {
+		setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value })
+	}
 
-  // Add new employee to the list
-  const handleAddEmployee = () => {
-    setEmployees([...employees, { ...newEmployee, id: Date.now() }]);
-    setNewEmployee({ name: '', position: '', email: '' }); // Clear input fields
-  };
+	// Add a new employee via API
+	const handleAddEmployee = async () => {
+		try {
+			const response = await axios.post(
+				'/backend/api/employee/add',
+				newEmployee
+			)
+			setEmployees([...employees, { ...response.data, id: Date.now() }]) // Assuming backend returns the new employee data
+			setNewEmployee({
+				userName: '',
+				phoneNumber: '',
+				shift: '',
+				shiftStart: '',
+				shiftEnd: '',
+			}) // Clear input fields
+			setShowModal(false) // Hide modal after submission
+		} catch (error) {
+			console.error('There was an error adding the employee!', error)
+		}
+	}
 
-  // Delete employee from the list
-  const handleDeleteEmployee = (id) => {
-    setEmployees(employees.filter((employee) => employee.id !== id));
-  };
+	// Edit employee details
+	const handleEditEmployee = (employee) => {
+		setNewEmployee(employee)
+		setEditEmployeeId(employee.id)
+		setShowModal(true)
+	}
 
-  // View employee details
-  const handleViewEmployee = (employee) => {
-    setViewEmployee(employee);
-  };
+	// Delete employee from the list
+	const handleDeleteEmployee = (id) => {
+		setEmployees(employees.filter((employee) => employee.id !== id))
+	}
 
-  return (
-    <div className="employee-management">
-      <button className="toggle-btn" onClick={handleToggleTable}>
-        {showTable ? 'Hide Employees' : 'Show Employees'}
-      </button>
+	// Save or update employee details
+	const handleSaveEmployee = () => {
+		if (editEmployeeId !== null) {
+			setEmployees(
+				employees.map((employee) =>
+					employee.id === editEmployeeId
+						? { ...newEmployee, id: editEmployeeId }
+						: employee
+				)
+			)
+			setEditEmployeeId(null)
+		} else {
+			handleAddEmployee()
+		}
+		setShowModal(false) // Hide modal after update
+	}
 
-      {showTable && (
-        <div className="table-container">
-          {/* Employee Table */}
-          <h2>Employee List</h2>
-          <table className="employee-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Email</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((employee) => (
-                <tr key={employee.id}>
-                  <td>{employee.name}</td>
-                  <td>{employee.position}</td>
-                  <td>{employee.email}</td>
-                  <td>
-                    <button
-                      className="view-btn"
-                      onClick={() => handleViewEmployee(employee)}
-                    >
-                      View
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDeleteEmployee(employee.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+	// Open modal for adding a new employee
+	const handleAddNewEmployee = () => {
+		setNewEmployee({
+			userName: '',
+			phoneNumber: '',
+			shift: '',
+			shiftStart: '',
+			shiftEnd: '',
+		})
+		setEditEmployeeId(null)
+		setShowModal(true)
+	}
 
-          {/* Add Employee Section */}
-          <div className="add-employee">
-            <h3>Add Employee</h3>
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={newEmployee.name}
-              onChange={handleInputChange}
-            />
-            <input
-              type="text"
-              name="position"
-              placeholder="Position"
-              value={newEmployee.position}
-              onChange={handleInputChange}
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={newEmployee.email}
-              onChange={handleInputChange}
-            />
-            <button className="add-btn" onClick={handleAddEmployee}>
-              Add Employee
-            </button>
-          </div>
+	// Handle the Enter key press for form submission
+	const handleKeyDown = (e) => {
+		if (e.key === 'Enter') {
+			handleSaveEmployee()
+		}
+	}
 
-          {/* View Employee Details */}
-          {viewEmployee && (
-            <div className="view-employee">
-              <h3>Employee Details</h3>
-              <p>
-                <strong>Name:</strong> {viewEmployee.name}
-              </p>
-              <p>
-                <strong>Position:</strong> {viewEmployee.position}
-              </p>
-              <p>
-                <strong>Email:</strong> {viewEmployee.email}
-              </p>
-              <button className="close-btn" onClick={() => setViewEmployee(null)}>
-                Close
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
+	return (
+		<div className='ml-[17%] employee-management'>
+			<div className='table-container'>
+				{/* Add Employee Button */}
+				<div className='flex justify-between items-center'>
+					{/* Employee Table */}
+					<h2 className='bg-slate-200 px-4 py-2 rounded-md font-semibold text-3xl '>
+						Employee's List
+					</h2>
+					<button
+						className='add-btn mb-4 mr-14'
+						onClick={handleAddNewEmployee}
+					>
+						Add Employee
+					</button>
+				</div>
+				<table className='employee-table'>
+					<thead>
+						<tr>
+							<th>User Name</th>
+							<th>Phone Number</th>
+							<th>Shift</th>
+							<th>Shift Start</th>
+							<th>Shift End</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{employees.map((employee) => (
+							<tr key={employee.id}>
+								<td>{employee.userName}</td>
+								<td>{employee.phoneNumber}</td>
+								<td>{employee.shift}</td>
+								<td>{employee.shiftStart}</td>
+								<td>{employee.shiftEnd}</td>
+								<td>
+									<button
+										className='view-btn'
+										onClick={() =>
+											handleEditEmployee(employee)
+										}
+									>
+										Edit
+									</button>
+									<button
+										className='delete-btn'
+										onClick={() =>
+											handleDeleteEmployee(employee.id)
+										}
+									>
+										Delete
+									</button>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
 
-export default EmployeeManagement;
+			{/* Modal for Add/Edit Employee */}
+			{showModal && (
+				<div className='r'>
+					<div className='modal'>
+						<div className='modal-content'>
+							<span
+								className='close'
+								onClick={() => setShowModal(false)}
+							>
+								&times;
+							</span>
+							<h3>
+								{editEmployeeId !== null
+									? 'Edit Employee'
+									: 'Add Employee'}
+							</h3>
+							<input
+								className='input-field'
+								type='text'
+								name='userName'
+								placeholder='User Name'
+								value={newEmployee.userName}
+								onChange={handleInputChange}
+								onKeyDown={handleKeyDown} // Handle Enter key
+							/>
+							<input
+								className='input-field'
+								type='text'
+								name='phoneNumber'
+								placeholder='Phone Number'
+								value={newEmployee.phoneNumber}
+								onChange={handleInputChange}
+								onKeyDown={handleKeyDown} // Handle Enter key
+							/>
+							<input
+								className='input-field'
+								type='text'
+								name='shift'
+								placeholder='Shift'
+								value={newEmployee.shift}
+								onChange={handleInputChange}
+								onKeyDown={handleKeyDown} // Handle Enter key
+							/>
+							<input
+								className='input-field'
+								type='text'
+								name='shiftStart'
+								placeholder='Shift Start'
+								value={newEmployee.shiftStart}
+								onChange={handleInputChange}
+								onKeyDown={handleKeyDown} // Handle Enter key
+							/>
+							<input
+								className='input-field'
+								type='text'
+								name='shiftEnd'
+								placeholder='Shift End'
+								value={newEmployee.shiftEnd}
+								onChange={handleInputChange}
+								onKeyDown={handleKeyDown} // Handle Enter key
+							/>
+							<button
+								className='save-btn'
+								onClick={handleSaveEmployee}
+							>
+								{editEmployeeId !== null
+									? 'Update Employee'
+									: 'Save Employee'}
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
+		</div>
+	)
+}
 
-
-
+export default EmployeeManagement

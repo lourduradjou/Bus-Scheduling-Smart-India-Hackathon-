@@ -31,6 +31,7 @@ export default {
 			},
 			screens: {
 				wide: '1440px',
+				extraWide: '1920',
 			},
 		},
 	},
