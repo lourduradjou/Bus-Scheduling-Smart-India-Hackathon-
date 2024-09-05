@@ -1,7 +1,9 @@
-import React from 'react';
+import React from 'react'
 import {
 	BarChart,
+	Area,
 	Bar,
+	ComposedChart,
 	XAxis,
 	YAxis,
 	CartesianGrid,
@@ -9,8 +11,7 @@ import {
 	Legend,
 	ResponsiveContainer,
 	Line,
-	ReferenceLine,
-} from 'recharts';
+} from 'recharts'
 
 function DashboardCharts() {
 	// Sample data for daily, monthly, and yearly revenues
@@ -22,7 +23,7 @@ function DashboardCharts() {
 		{ date: '2024-08-05', revenue: 1000, expense: 600 },
 		{ date: '2024-08-06', revenue: 1200, expense: 700 },
 		{ date: '2024-08-07', revenue: 900, expense: 500 },
-	];
+	]
 
 	const monthlyData = [
 		{ month: '2024-01', revenue: 12000, expense: 8000 },
@@ -37,7 +38,7 @@ function DashboardCharts() {
 		{ month: '2024-10', revenue: 22000, expense: 11500 },
 		{ month: '2024-11', revenue: 24000, expense: 12000 },
 		{ month: '2024-12', revenue: 26000, expense: 12500 },
-	];
+	]
 
 	const yearlyData = [
 		{ year: '2013', revenue: 180000, expense: 120000 },
@@ -54,14 +55,14 @@ function DashboardCharts() {
 		{ year: '2024', revenue: 320000, expense: 190000 },
 		{ year: '2025', revenue: 340000, expense: 200000 },
 		{ year: '2026', revenue: 360000, expense: 210000 },
-	];
+	]
 
 	return (
 		<div className='grid grid-cols-1 gap-4 m-10 min-h-screen'>
 			<div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
 				{/* Daily Revenue Chart */}
 				<ResponsiveContainer width='100%' height={300}>
-					<BarChart data={dailyData}>
+					<ComposedChart data={dailyData}>
 						<CartesianGrid strokeDasharray='3 3' />
 						<XAxis
 							dataKey='date'
@@ -70,95 +71,110 @@ function DashboardCharts() {
 							}
 						/>
 						<YAxis />
-						<Tooltip
-							content={({ payload }) => {
-								if (payload && payload.length) {
-									const { payload: { date, revenue, expense } } = payload[0];
-									return (
-										<div className="custom-tooltip" style={{ background: 'rgba(0, 0, 0, 0.6)', color: '#fff', padding: '10px', borderRadius: '5px' }}>
-											<p>Date: {new Date(date).toLocaleDateString()}</p>
-											<p>Revenue: ${revenue}</p>
-											<p>Expense: ${expense}</p>
-										</div>
-									);
-								}
-								return null;
-							}}
-						/>
+						<Tooltip />
 						<Legend />
-						<Bar dataKey='revenue' fill='#ff006e' animationDuration={1500} />
-						<Bar dataKey='expense' fill='#00bfae' animationDuration={1500} />
-						
-					</BarChart>
+						{/* Bar and Line for Revenue and Expense */}
+						<Bar
+							dataKey='revenue'
+							fill='#ff006e'
+							animationDuration={1500}
+						/>
+						<Bar
+							dataKey='expense'
+							fill='#00bfae'
+							animationDuration={1500}
+						/>
+						<Area
+							type='monotone'
+							dataKey='revenue'
+							fill='#ff006e'
+							stroke='#8884d8'
+						/>
+						<Area
+							type='monotone'
+							dataKey='expense'
+							fill='#00bfae'
+							stroke='#8884d8'
+						/>
+						<Line
+							type='monotone'
+							dataKey='revenue'
+							stroke='#ff006e'
+						/>
+						<Line
+							type='monotone'
+							dataKey='expense'
+							stroke='#00bfae'
+						/>
+					</ComposedChart>
 				</ResponsiveContainer>
 
 				{/* Monthly Revenue Chart */}
 				<ResponsiveContainer width='100%' height={300}>
-					<BarChart data={monthlyData}>
+					<ComposedChart data={monthlyData}>
 						<CartesianGrid strokeDasharray='3 3' />
 						<XAxis
 							dataKey='month'
 							tickFormatter={(tick) =>
 								new Date(tick + '-01').toLocaleString(
 									'default',
-									{ month: 'long', year: 'numeric' }
+									{
+										month: 'long',
+										year: 'numeric',
+									}
 								)
 							}
 						/>
 						<YAxis />
-						<Tooltip
-							content={({ payload }) => {
-								if (payload && payload.length) {
-									const { payload: { month, revenue, expense } } = payload[0];
-									return (
-										<div className="custom-tooltip" style={{ background: 'rgba(0, 0, 0, 0.6)', color: '#fff', padding: '10px', borderRadius: '5px' }}>
-											<p>Month: {new Date(month + '-01').toLocaleString('default', { month: 'long', year: 'numeric' })}</p>
-											<p>Revenue: ${revenue}</p>
-											<p>Expense: ${expense}</p>
-										</div>
-									);
-								}
-								return null;
-							}}
-						/>
+						<Tooltip />
 						<Legend />
+						{/* Bar and Line for Revenue and Expense */}
 						<Bar dataKey='revenue' fill='#8338ec' stackId='a' />
 						<Bar dataKey='expense' fill='#facc15' stackId='a' />
+						<Line
+							type='natural'
+							dataKey='revenue'
+							stroke='#8338ec'
+							strokeWidth={2}
+						/>
 						
-					</BarChart>
+						<Line
+							type='natural'
+							dataKey='expense'
+							stroke='#facc15'
+							strokeWidth={2}
+						/>
+					</ComposedChart>
 				</ResponsiveContainer>
 			</div>
 
 			{/* Yearly Revenue Chart (Full Width) */}
 			<ResponsiveContainer width='100%' height={400}>
-				<BarChart data={yearlyData}>
+				<ComposedChart data={yearlyData}>
 					<CartesianGrid strokeDasharray='3 3' />
 					<XAxis dataKey='year' />
 					<YAxis />
-					<Tooltip
-						content={({ payload }) => {
-							if (payload && payload.length) {
-								const { payload: { year, revenue, expense } } = payload[0];
-								return (
-									<div className="custom-tooltip" style={{ background: 'rgba(0, 0, 0, 0.6)', color: '#fff', padding: '10px', borderRadius: '5px' }}>
-										<p>Year: {year}</p>
-										<p>Revenue: ${revenue}</p>
-										<p>Expense: ${expense}</p>
-									</div>
-								);
-							}
-							return null;
-						}}
-					/>
+					<Tooltip />
 					<Legend />
+					{/* Bar and Line for Revenue and Expense */}
 					<Bar dataKey='revenue' fill='#3a86ff' />
-					<Bar dataKey='expense' fill='#00bfae' />
-					
-					
-				</BarChart>
+					<Bar dataKey='expense' fill='#f18701' />
+					<Line
+						type='monotone'
+						dataKey='revenue'
+						strokeWidth={2}
+						stroke='#3a86ff'
+					/>
+					<Line
+						type='monotone'
+						dataKey='expense'
+						strokeWidth={2}
+						stroke='#f18701'
+					/>
+				</ComposedChart>
 			</ResponsiveContainer>
 		</div>
-	);
+	)
 }
 
-export default DashboardCharts;
+export default DashboardCharts
