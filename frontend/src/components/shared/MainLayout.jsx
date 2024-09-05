@@ -10,7 +10,7 @@ const MainLayout = ({ children }) => {
         <SideBar />
         
         {/* Main content on the right */}
-        <div className="flex-1 p-4 bg-[#e2ecf7]">
+        <div className="flex-1 p-4 bg-[#dee2ff7e]">
           {children}
         </div>
       </div>
