@@ -60,7 +60,6 @@ const SideBar = () => {
     useEffect(() => {
         // Save activeLink and isSidebarOpen to localStorage when they change
         localStorage.setItem('activeLink', activeLink);
-        localStorage.setItem('isSidebarOpen', JSON.stringify(isSidebarOpen));
     }, [activeLink, isSidebarOpen]);
 
     const handleLinkClick = (key, path) => {
