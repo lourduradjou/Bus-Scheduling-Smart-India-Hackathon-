@@ -37,7 +37,7 @@ function Login() {
       localStorage.setItem('refresh', res.data.refresh);
       navigate("/");
     } catch (error) {
-      alert(error);
+      alert("ENTER THE CORRECT CREDENTIALS");
     }
   };
 

@@ -73,13 +73,13 @@ function SignUp() {
 
     try{
       if (validateForm()){
-        const res = await api.post("/api/user/register/",{phoneNumber,email,password})
+        const res = await api.post("/api/user/register/",{username:phoneNumber,email,password})
         navigate("/login")
 
       }
     }
     catch(error){
-      alert("USER NAME ALREADY EXISTS")
+      alert("PHONE NUMBER ALREADY EXISTS")
     }
   };
 
