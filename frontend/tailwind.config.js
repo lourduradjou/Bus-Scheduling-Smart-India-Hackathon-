@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import fluid, { extract } from 'fluid-tailwind'
 export default {
-	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', extract],
 	theme: {
 		fontSize: {
 			xs: ['12px', '16px'],
@@ -15,7 +16,7 @@ export default {
 		},
 		extend: {
 			backgroundImage: {
-				'analyzeImg': "url('./assets/analyze.png')",
+				analyzeImg: "url('./assets/analyze.png')",
 			},
 			fontFamily: {
 				palanquin: ['Palanquin', 'sans-serif'],
@@ -35,5 +36,5 @@ export default {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [fluid],
 }

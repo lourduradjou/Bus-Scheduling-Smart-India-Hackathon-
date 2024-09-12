@@ -1,19 +1,20 @@
-
 // import { FaAngleRight } from "react-icons/fa6";
 const Footer = () => {
 	const currentYear = new Date().getFullYear() // Dynamically get the current year
 
 	return (
-		<footer className='ml-60 flex flex-col md:flex-row justify-evenly items-center bg-[#0c1a42] text-slate-gray py-6 px-4'>
-			<div className='text-center md:text-left'>
-				<h1 className='text-lg font-bold'>Transport Department</h1>
-				<p>Government of NCT of Delhi</p>
-			</div>
-			<div className='text-center mt-2 md:mt-0'>
-				Copyright © {currentYear} - All Rights Reserved - Official
-				Website of Government of National Capital Territory of Delhi,
-				India.
-			</div>
+		<footer className='flex flex-col md:flex-row justify-evenly items-center bg-[#0c1a42] text-slate-gray py-6 px-4'>
+			
+				<div className='ml-[17%] text-center md:text-left'>
+					<h1 className='text-lg font-bold'>Transport Department</h1>
+					<p>Government of NCT of Delhi</p>
+				</div>
+				<div className='text-center mt-2 md:mt-0'>
+					Copyright © {currentYear} - All Rights Reserved - Official
+					Website of Government of National Capital Territory of
+					Delhi, India.
+				</div>
+			
 		</footer>
 	)
 }
