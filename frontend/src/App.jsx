@@ -26,21 +26,21 @@ const App = () => {
           path="/"
           element={
             // Ensures that the users are logged in 
-           <ProtectesRoutes >    
+            //<ProtectesRoutes >    
               <MainLayout>
                 <DashBoard />
               </MainLayout>
-            </ProtectesRoutes>
+            //</ProtectesRoutes>
           }
         />
         <Route
           path="/schedulerManagement"
           element={
-            <ProtectesRoutes >
+            //<ProtectesRoutes >
               <MainLayout>
                 <EmployeeManagement />
               </MainLayout>
-            </ProtectesRoutes>
+            //</ProtectesRoutes>
           }
         />
 
