@@ -16,20 +16,20 @@ const SIDE_BAR_LINKS = [
 	},
 	{
 		key: 'Analysis',
-		label: 'Analysis',
+		label: 'Analytics',
 		path: '/analysis',
 		icon: <MdContentPasteSearch />,
 	},
 	{
 		key: 'Employee Details',
-		label: 'Employees',
-		path: '/employeeManagement',
+		label: 'Scheduler',
+		path: '/schedulerManagement',
 		icon: <GrContactInfo />,
 	},
 	{
 		key: 'GIS',
-		label: 'GIS',
-		path: '/gis',
+		label: 'GIS System',
+		path: '/gisSystem',
 		icon: <GrMapLocation />,
 	},
 ]

@@ -78,10 +78,7 @@
     transition: background-color 0.3s;
     margin-top: 1rem;
   }
-  
-  .add-btn:hover {
-    background-color: #218838;
-  }
+
   
   .view-btn {
     background-color: #7209b7;

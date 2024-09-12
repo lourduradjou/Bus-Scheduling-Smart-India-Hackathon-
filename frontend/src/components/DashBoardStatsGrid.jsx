@@ -100,14 +100,14 @@ function DashboardStatsGrid() {
 					</div>
 				</div>
 			</BoxWrapper>
-			;
+		
 		</div>
 	)
 }
 
 function BoxWrapper({ children }) {
 	return (
-		<div className='relative mt-4 bg-[#15616d] drop-shadow-lg text-slate-300 rounded-s-3xl w-full px-6 py-8 flex-1 border border-gray-200 flex items-center justify-evenly hover:scale-105 duration-300 mb-6'>
+		<div className='relative mt-4 bg-[#15616d] drop-shadow-lg text-slate-300 rounded-s-3xl w-full px-6 py-8 flex-1  flex items-center justify-evenly hover:scale-105 duration-300 mb-6'>
 			{/* Children content */}
 			{children}
 
