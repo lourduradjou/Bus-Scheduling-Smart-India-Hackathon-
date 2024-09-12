@@ -137,7 +137,7 @@ const EmployeeManagement = () => {
 	}
 
 	return (
-		<div className='ml-[17%] employee-management'>
+		<div className='ml-[17%] mr-[6%] employee-management'>
 			<div className='table-container'>
 				{/* Add Employee Button */}
 				<div className='flex justify-between items-center'>
