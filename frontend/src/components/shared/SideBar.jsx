@@ -106,7 +106,7 @@ const SideBar = () => {
                             </div>
                         </h1>
                     )}
-                    {isSidebarOpen && (
+                    {/* {isSidebarOpen && (
                         <div className='bg-gray-300 fixed top-4 right-4 p-1 rounded-full hover:bg-gray-400 active:scale-95 duration-300 ease-in-out'>
                             <AiOutlineClose
                                 size={24}
@@ -114,7 +114,7 @@ const SideBar = () => {
                                 onClick={toggleSidebar}
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Navigation Links */}
