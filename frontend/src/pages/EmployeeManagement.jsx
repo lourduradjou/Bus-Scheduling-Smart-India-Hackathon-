@@ -39,6 +39,7 @@ const EmployeeManagement = () => {
 		fetchEmployees()
 	}, []) // Run once when the component mounts
 
+	// TODO: One work pending here to connect the backend rest api to send back the scheduled changes...
 	const efficientSchedule = () => {
 		axios
 			.post('/backend/api/efficientSchedule')
@@ -48,6 +49,7 @@ const EmployeeManagement = () => {
 			.catch((err) => console.log(err))
 	}
 
+	// TODO: One work pending here to connect the backend rest api to send back the scheduled changes...
 	const balancedSchedule = () => {
 		axios
 			.post('/backend/api/balancedSchedule')
