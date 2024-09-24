@@ -20,9 +20,7 @@ function DashboardCharts() {
 		{ date: '2024-08-02', revenue: 700, expense: 400 },
 		{ date: '2024-08-03', revenue: 800, expense: 450 },
 		{ date: '2024-08-04', revenue: 600, expense: 350 },
-		{ date: '2024-08-05', revenue: 1000, expense: 600 },
-		{ date: '2024-08-06', revenue: 1200, expense: 700 },
-		{ date: '2024-08-07', revenue: 900, expense: 500 },
+		
 	]
 
 	const monthlyData = [

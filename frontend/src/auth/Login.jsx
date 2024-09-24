@@ -42,16 +42,11 @@ function Login() {
   };
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className='bg-black'>
       <div style={styles.formContainer}>
         <h2 style={styles.title}>LOGIN</h2>
         <p style={styles.welcomeText}>Hi, Welcome back 👋</p>
-        
-        <button style={styles.googleButton}>
-          Login with Google
-        </button>
-        
-        <p style={styles.orText}>Or Login with Phone Number</p>
+
         
         <form onSubmit={handleSubmit}>
           <div style={styles.inputContainer}>
@@ -83,18 +78,13 @@ function Login() {
           </div>
           
           <div style={styles.optionsContainer}>
-            <div>
-              <input type="checkbox" id="rememberMe" />
-              <label htmlFor="rememberMe"> Remember Me</label>
-            </div>
+           
             <a href="#" style={styles.forgotPassword}>Forgot Password?</a>
           </div>
           
           <button type="submit" style={styles.loginButton}>Login</button>
           
-          <p style={styles.signUpText}>
-            Not registered yet? <a href="/SignUp" style={styles.signUpLink}>Create an account</a>
-          </p>
+         
         </form>
       </div>
     </div>
@@ -116,7 +106,7 @@ const styles = {
     width: '500px',
     padding: '40px',
     borderRadius: '13px',
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
     textAlign: 'center',
     backdropFilter: 'blur(8px)', 

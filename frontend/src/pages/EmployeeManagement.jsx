@@ -1,63 +1,61 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './EmployeeManagement.css' // Import the CSS file for styling
 import axios from 'axios' // Import axios for API requests
+import { ClipLoader } from 'react-spinners' // Loading spinner
 
-const efficientSchedule = () => {
-	axios
-		.post('/backend/api/efficientSchedule')
-		.then((res) => {
-			setScheduledEmployees(res)
-		})
-		.catch((err) => console.log(err))
-}
+// TODO: Daryl work : starts at line 23
 
-const balancedSchedule = () => {
-	axios
-		.post('/backend/api/balancedSchedule')
-		.then((res) => {
-			setScheduledEmployees(res)
-		})
-		.catch((err) => console.log(err))
-}
-
-// Main Employee Management Component
 const EmployeeManagement = () => {
-	const allotedPayment = 80
-	// Initial employees data
-	const [employees, setEmployees] = useState([
-		{
-			id: 1,
-			driverId: 'D1234', // Example driverId
-			userName: 'John Doe',
-			phoneNumber: '123-456-7890',
-			shift: 'Morning',
-			shiftStart: '08:00 AM',
-			shiftEnd: '02:00 PM',
-			workedHours: 8,
-		},
-		{
-			id: 2,
-			driverId: 'D5678', // Example driverId
-			userName: 'Jane Smith',
-			phoneNumber: '987-654-3210',
-			shift: 'Afternoon',
-			shiftStart: '02:00 PM',
-			shiftEnd: '08:00 PM',
-			workedHours: 7,
-		},
-		// Add more employees as needed
-	]) // State to store employee list
-
+	const [employees, setEmployees] = useState([]) // State to store employee list
+	const [loading, setLoading] = useState(true) // Loading state
+	const [showModal, setShowModal] = useState(false) // State to control modal visibility
 	const [newEmployee, setNewEmployee] = useState({
-		driverId: '', // New attribute
-		userName: '',
-		phoneNumber: '',
-		shift: '',
+		busId: '',
 		shiftStart: '',
 		shiftEnd: '',
+		crewId: '',
 	}) // State for new employee input
 	const [editEmployeeId, setEditEmployeeId] = useState(null) // State for the employee being edited
-	const [showModal, setShowModal] = useState(false) // State to control modal visibility
+	const [scheduledEmployees, setScheduledEmployees] = useState([]) // Missing state to store scheduled employees
+
+	// Fetch employees data from backend
+	// ! work here daryl
+	useEffect(() => {
+		const fetchEmployees = async () => {
+			try {
+				const response = await axios.get(
+					'https://api.example.com/employees'
+				) // ! change according to your need here
+				// This is initial loading employees ...
+				// firstly the alloted values will be null, after the use the schedule method, it will change as discussed
+				setEmployees(response.data)
+			} catch (error) {
+				console.error('Error fetching employee data!', error)
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		fetchEmployees()
+	}, []) // Run once when the component mounts
+
+	const efficientSchedule = () => {
+		axios
+			.post('/backend/api/efficientSchedule')
+			.then((res) => {
+				setScheduledEmployees(res.data)
+			})
+			.catch((err) => console.log(err))
+	}
+
+	const balancedSchedule = () => {
+		axios
+			.post('/backend/api/balancedSchedule')
+			.then((res) => {
+				setScheduledEmployees(res.data)
+			})
+			.catch((err) => console.log(err))
+	}
 
 	// Handle input change for employee form
 	const handleInputChange = (e) => {
@@ -68,18 +66,16 @@ const EmployeeManagement = () => {
 	const handleAddEmployee = async () => {
 		try {
 			const response = await axios.post(
-				'/backend/api/employee/add',
+				'https://api.example.com/employee/add',
 				newEmployee
 			)
 			setEmployees([...employees, { ...response.data, id: Date.now() }]) // Assuming backend returns the new employee data
 			setNewEmployee({
-				driverId: '', // Clear driverId field
-				userName: '',
-				phoneNumber: '',
-				shift: '',
+				busId: '', // Clear input fields
 				shiftStart: '',
 				shiftEnd: '',
-			}) // Clear input fields
+				crewId: '',
+			})
 			setShowModal(false) // Hide modal after submission
 		} catch (error) {
 			console.error('There was an error adding the employee!', error)
@@ -118,12 +114,10 @@ const EmployeeManagement = () => {
 	// Open modal for adding a new employee
 	const handleAddNewEmployee = () => {
 		setNewEmployee({
-			driverId: '', // Initialize driverId field
-			userName: '',
-			phoneNumber: '',
-			shift: '',
+			busId: '', // Initialize input fields
 			shiftStart: '',
 			shiftEnd: '',
+			crewId: '',
 		})
 		setEditEmployeeId(null)
 		setShowModal(true)
@@ -134,6 +128,16 @@ const EmployeeManagement = () => {
 		if (e.key === 'Enter') {
 			handleSaveEmployee()
 		}
+	}
+
+	// Conditional rendering for loading and employee table
+	if (loading) {
+		return (
+			<div className='ml-[10%] mr-[6%] loader-container flex items-center justify-center w-full min-h-screen'>
+				<ClipLoader size={50} color={'#123abc'} loading={loading} />
+				<p className='ml-[10px]'>Loading employees...</p>
+			</div>
+		)
 	}
 
 	return (
@@ -152,17 +156,13 @@ const EmployeeManagement = () => {
 						<div className='flex justify-evenly w-full gap-3 items-center'>
 							<button
 								className='add-btn hover:bg-[#218838] duration-200 active:scale-95 tracking-wider'
-								onClick={() => {
-									efficientSchedule
-								}}
+								onClick={efficientSchedule}
 							>
 								Efficient
 							</button>
 							<button
 								className='add-btn bg-orange-400 hover:bg-orange-500 duration-200 active:scale-95 tracking-wider'
-								onClick={() => {
-									balancedSchedule
-								}}
+								onClick={balancedSchedule}
 							>
 								Balanced
 							</button>
@@ -178,27 +178,20 @@ const EmployeeManagement = () => {
 				<table className='employee-table'>
 					<thead>
 						<tr>
-							<th>Bus ID</th> {/* Updated header */}
-							<th>Shift</th> {/* Updated header */}
-							<th>Shift Start</th> {/* Updated header */}
-							<th>Shift End</th> {/* Updated header */}
-							<th>Driver ID</th> {/* Updated header */}
-							<th>Hours Worked</th>
-							<th>Salary</th>
+							<th>Bus ID</th>
+							<th>Shift Start</th>
+							<th>Shift End</th>
+							<th>Crew ID</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{employees.map((employee) => (
-							<tr key={employee.id}>
-								<td>{employee.id}</td>{' '}
-								{/* Assuming bus ID is the same as employee ID */}
-								<td>{employee.shift}</td>
-								<td>{employee.shiftStart}</td>
-								<td>{employee.shiftEnd}</td>
-								<td>{employee.driverId}</td>
-								<td>{employee.workedHours}</td>
-								<td>{employee.workedHours * allotedPayment}</td>
+							<tr key={employee.shift_id}>
+								<td>{employee.bus_id}</td>
+								<td>{employee.shift_start}</td>
+								<td>{employee.shift_end}</td>
+								<td>{employee.crew_id}</td>
 								<td className='space-x-6 mx-auto'>
 									<button
 										className='view-btn transition-transform duration-300 active:scale-95 tracking-wider px-5 py-2'
@@ -211,7 +204,9 @@ const EmployeeManagement = () => {
 									<button
 										className='delete-btn transition-transform tracking-wider active:scale-95 duration-300 px-5 py-2'
 										onClick={() =>
-											handleDeleteEmployee(employee.id)
+											handleDeleteEmployee(
+												employee.shift_id
+											)
 										}
 									>
 										Delete
@@ -225,65 +220,61 @@ const EmployeeManagement = () => {
 
 			{/* Modal for Add/Edit Employee */}
 			{showModal && (
-				<div className='r'>
-					<div className='modal'>
-						<div className='modal-content'>
-							<span
-								className='close'
-								onClick={() => setShowModal(false)}
-							>
-								&times;
-							</span>
-							<h3>
-								{editEmployeeId !== null
-									? 'Edit Employee'
-									: 'Add Employee'}
-							</h3>
-							<input
-								className='input-field'
-								type='text'
-								name='driverId'
-								placeholder='Driver ID' // New input
-								value={newEmployee.driverId}
-								onChange={handleInputChange}
-								onKeyDown={handleKeyDown} // Handle Enter key
-							/>
-							<input
-								className='input-field'
-								type='text'
-								name='shift'
-								placeholder='Shift'
-								value={newEmployee.shift}
-								onChange={handleInputChange}
-								onKeyDown={handleKeyDown} // Handle Enter key
-							/>
-							<input
-								className='input-field'
-								type='text'
-								name='shiftStart'
-								placeholder='Shift Start'
-								value={newEmployee.shiftStart}
-								onChange={handleInputChange}
-								onKeyDown={handleKeyDown} // Handle Enter key
-							/>
-							<input
-								className='input-field'
-								type='text'
-								name='shiftEnd'
-								placeholder='Shift End'
-								value={newEmployee.shiftEnd}
-								onChange={handleInputChange}
-								onKeyDown={handleKeyDown} // Handle Enter key
-							/>
-							<button
-								className='save-btn'
-								onClick={handleSaveEmployee}
-							>
-								{editEmployeeId !== null
-									? 'Update Employee'
-									: 'Save Employee'}
-							</button>
-						</div>
+				<div className='modal'>
+					<div className='modal-content'>
+						<span
+							className='close'
+							onClick={() => setShowModal(false)}
+						>
+							&times;
+						</span>
+						<h3>
+							{editEmployeeId !== null
+								? 'Edit Employee'
+								: 'Add Employee'}
+						</h3>
+						<input
+							className='input-field'
+							type='text'
+							name='busId'
+							placeholder='Bus ID'
+							value={newEmployee.busId}
+							onChange={handleInputChange}
+							onKeyDown={handleKeyDown} // Handle Enter key
+						/>
+						<input
+							className='input-field'
+							type='text'
+							name='shiftStart'
+							placeholder='Shift Start'
+							value={newEmployee.shiftStart}
+							onChange={handleInputChange}
+							onKeyDown={handleKeyDown}
+						/>
+						<input
+							className='input-field'
+							type='text'
+							name='shiftEnd'
+							placeholder='Shift End'
+							value={newEmployee.shiftEnd}
+							onChange={handleInputChange}
+							onKeyDown={handleKeyDown}
+						/>
+						<input
+							className='input-field'
+							type='text'
+							name='crewId'
+							placeholder='Crew ID'
+							value={newEmployee.crewId}
+							onChange={handleInputChange}
+							onKeyDown={handleKeyDown}
+						/>
+						<button
+							className='save-btn'
+							onClick={handleSaveEmployee}
+						>
+							{editEmployeeId !== null ? 'Update' : 'Add'}
+						</button>
 					</div>
 				</div>
 			)}

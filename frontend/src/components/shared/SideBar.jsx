@@ -77,7 +77,7 @@ const SideBar = () => {
     };
 
     return (
-        <>
+        <div className='min-h-screen'>
             {/* Hamburger Icon */}
             {!isSidebarOpen && (
                 <div
@@ -174,7 +174,7 @@ const SideBar = () => {
                     </li>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
