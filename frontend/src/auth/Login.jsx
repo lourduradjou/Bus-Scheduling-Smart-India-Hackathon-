@@ -1,61 +1,91 @@
 
-import React from 'react';
-import busImage from '../assets/authImage/bus-light-dark-glow.jpg'; // Adjust the path based on where you place the image
+import React, { useState } from 'react';
+import busImage from '../assets/authImage/bus.jpg'; 
+import { useNavigate } from 'react-router-dom';
+import api from '../api';
 
 function Login() {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+
+  const validateUsername = (phoneNumber) => {
+    const usernamePattern = /^\d{10}$/; 
+    if (!usernamePattern.test(phoneNumber)) {
+      return 'Please enter a valid Phone Number.';
+    }
+    return '';
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const usernameErrorMsg = validateUsername(phoneNumber);
+    if (usernameErrorMsg) {
+      setPhoneNumberError(usernameErrorMsg);
+      return;
+    }
+
+    setPhoneNumberError('');
+    console.log('Form submitted with:', { phoneNumber, password });
+
+    try {
+      const res = await api.post("api/token/", { username: phoneNumber, password });
+      localStorage.setItem('access', res.data.access);
+      localStorage.setItem('refresh', res.data.refresh);
+      navigate("/");
+    } catch (error) {
+      alert("ENTER THE CORRECT CREDENTIALS");
+    }
+  };
+
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className='bg-black'>
       <div style={styles.formContainer}>
-        <h2 style={styles.title}>Login</h2>
+        <h2 style={styles.title}>LOGIN</h2>
         <p style={styles.welcomeText}>Hi, Welcome back 👋</p>
 
-        <button style={styles.googleButton}>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png"
-            alt="Google Icon"
-            style={styles.googleIcon}
-          />
-          Login with Google
-        </button>
-
-        <p style={styles.orText}>or Login with Email</p>
-
-        <div style={styles.inputContainer}>
-          <label style={styles.label}>Email</label>
-          <input
-            type="email"
-            placeholder="E.g. johndoe@email.com"
-            style={styles.input}
-          />
-        </div>
-
-        <div style={styles.inputContainer}>
-          <label style={styles.label}>Password</label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            style={styles.input}
-          />
-        </div>
-
-        <div style={styles.optionsContainer}>
-          <div style={styles.rememberMeContainer}>
-            <input type="checkbox" id="rememberMe" style={styles.checkbox} />
-            <label htmlFor="rememberMe" style={styles.rememberMeLabel}> Remember Me</label>
+        
+        <form onSubmit={handleSubmit}>
+          <div style={styles.inputContainer}>
+            <label>Phone Number</label>
+            <input
+              type="text"
+              placeholder="E.g. 1234567890"
+              style={styles.input}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              maxLength={30}
+              required
+            />
+            {phoneNumberError && <p style={styles.errorText}>{phoneNumberError}</p>}
           </div>
-          <a href="#" style={styles.forgotPassword}>
-            Forgot Password?
-          </a>
-        </div>
-
-        <button style={styles.loginButton}>Login</button>
-
-        <p style={styles.signUpText}>
-          Not registered yet?{' '}
-          <a href="#" style={styles.signUpLink}>
-            Create an account
-          </a>
-        </p>
+          
+          <div style={styles.inputContainer}>
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              style={styles.input}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={6}
+              maxLength={12}
+              required
+            />
+          </div>
+          
+          <div style={styles.optionsContainer}>
+           
+            <a href="#" style={styles.forgotPassword}>Forgot Password?</a>
+          </div>
+          
+          <button type="submit" style={styles.loginButton}>Login</button>
+          
+         
+        </form>
       </div>
     </div>
   );
@@ -67,17 +97,18 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
-    backgroundImage: url(${busImage}),
+    backgroundImage: `url(${busImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
   formContainer: {
-    width: '400px',
+    width: '500px',
     padding: '40px',
-    borderRadius: '12px',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)', // Very transparent background
+    borderRadius: '13px',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
     textAlign: 'center',
-    border: 'none', // No border for full integration
+    backdropFilter: 'blur(8px)', 
   },
   title: {
     fontSize: '24px',
@@ -87,7 +118,9 @@ const styles = {
   },
   welcomeText: {
     marginBottom: '20px',
-    color: '#fff', // White text for better readability
+    fontFamily: 'Georgia, serif',
+    fontSize: '20px', 
+    fontStyle: 'italic', 
   },
   googleButton: {
     width: '100%',
@@ -102,14 +135,9 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  googleIcon: {
-    width: '20px',
-    marginRight: '8px',
-    verticalAlign: 'middle',
-  },
   orText: {
     marginBottom: '20px',
-    color: '#ddd', // Light text to blend with background
+    color: '#fff',
   },
   inputContainer: {
     marginBottom: '15px',
@@ -146,7 +174,7 @@ const styles = {
   },
   forgotPassword: {
     textDecoration: 'none',
-    color: '#4285F4',
+    color: '#57030b',
   },
   loginButton: {
     width: '100%',
@@ -159,12 +187,19 @@ const styles = {
     marginBottom: '20px',
   },
   signUpText: {
-    color: '#ddd', // Light text for sign-up text
+    color: 'black',
   },
   signUpLink: {
     textDecoration: 'none',
-    color: '#4285F4',
+    color: '#57030b',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: '12px',
+    marginTop: '5px',
+    textAlign: 'left',
   },
 };
 
-export default Login;
+export default Login;
+
