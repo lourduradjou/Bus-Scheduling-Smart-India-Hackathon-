@@ -77,7 +77,7 @@ const SideBar = () => {
     };
 
     return (
-        <>
+        <div className='min-h-screen'>
             {/* Hamburger Icon */}
             {!isSidebarOpen && (
                 <div
@@ -97,7 +97,7 @@ const SideBar = () => {
                 }`}
             >
                 {/* Sidebar Header with Close Icon */}
-                <div className='w-full flex items-center justify-between p-8 bg-[#081830] opacity-90'>
+                <div className='w-full flex items-center justify-center p-8 bg-[#081830] opacity-90'>
                     {isSidebarOpen && (
                         <h1 className='md:text-2xl wide:text-3xl xl hover:text-[#ffc404] font-semibold'>
                             NCT Delhi
@@ -106,7 +106,7 @@ const SideBar = () => {
                             </div>
                         </h1>
                     )}
-                    {isSidebarOpen && (
+                    {/* {isSidebarOpen && (
                         <div className='bg-gray-300 fixed top-4 right-4 p-1 rounded-full hover:bg-gray-400 active:scale-95 duration-300 ease-in-out'>
                             <AiOutlineClose
                                 size={24}
@@ -114,7 +114,7 @@ const SideBar = () => {
                                 onClick={toggleSidebar}
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Navigation Links */}
@@ -174,7 +174,7 @@ const SideBar = () => {
                     </li>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

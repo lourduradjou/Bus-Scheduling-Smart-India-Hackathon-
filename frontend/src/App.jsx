@@ -7,6 +7,7 @@ import MainLayout from './components/shared/MainLayout'
 import EmployeeManagement from './pages/EmployeeManagement'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import NotFound from './pages/NotFound'
+import UserProfile from './auth/UserProfile'
 
 function RegisterAndLogout() {
 	localStorage.clear()
@@ -20,6 +21,7 @@ const App = () => {
 				{/* Public routes (without sidebar) */}
 				<Route path='/login' element={<Login />} />
 				<Route path='/signup' element={<RegisterAndLogout />} />
+				<Route path='/crewDetails' element={<UserProfile />} />
 
 				{/* Protected routes (with sidebar) */}
 				<Route
