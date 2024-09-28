@@ -97,7 +97,7 @@ const SideBar = () => {
                 }`}
             >
                 {/* Sidebar Header with Close Icon */}
-                <div className='w-full flex items-center justify-between p-8 bg-[#081830] opacity-90'>
+                <div className='w-full flex items-center justify-center p-8 bg-[#081830] opacity-90'>
                     {isSidebarOpen && (
                         <h1 className='md:text-2xl wide:text-3xl xl hover:text-[#ffc404] font-semibold'>
                             NCT Delhi
