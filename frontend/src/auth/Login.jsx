@@ -100,7 +100,6 @@ const styles = {
     backgroundImage: `url(${busImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
   },
   formContainer: {
     width: '500px',
@@ -115,6 +114,7 @@ const styles = {
     fontSize: '24px',
     fontWeight: 'bold',
     marginBottom: '10px',
+    color: '#fff', // White text for contrast
   },
   welcomeText: {
     marginBottom: '20px',
@@ -131,6 +131,9 @@ const styles = {
     borderRadius: '5px',
     marginBottom: '15px',
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   orText: {
     marginBottom: '20px',
@@ -140,17 +143,34 @@ const styles = {
     marginBottom: '15px',
     textAlign: 'left',
   },
+  label: {
+    display: 'block',
+    marginBottom: '5px',
+    color: '#fff', // White text for labels
+  },
   input: {
     width: '100%',
     padding: '10px',
     borderRadius: '5px',
-    border: '1px solid #ccc',
+    border: '1px solid #fff', // White border to blend with the background
+    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Slightly transparent input background
+    color: '#fff', // White text for input
   },
   optionsContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: '20px',
+  },
+  rememberMeContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  checkbox: {
+    marginRight: '5px',
+  },
+  rememberMeLabel: {
+    color: '#fff', // White text for Remember Me label
   },
   forgotPassword: {
     textDecoration: 'none',
