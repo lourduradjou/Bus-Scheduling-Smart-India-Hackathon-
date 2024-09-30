@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './EmployeeManagement.css' // Import the CSS file for styling
 import axios from 'axios' // Import axios for API requests
 import { ClipLoader } from 'react-spinners' // Loading spinner
+import api from '../api'
 
 // TODO: Daryl work : starts at line 23
 
@@ -10,10 +11,10 @@ const EmployeeManagement = () => {
 	const [loading, setLoading] = useState(true) // Loading state
 	const [showModal, setShowModal] = useState(false) // State to control modal visibility
 	const [newEmployee, setNewEmployee] = useState({
-		busId: '',
-		shiftStart: '',
-		shiftEnd: '',
-		crewId: '',
+		bus_id: '',
+		shift_start: '',
+		shift_end: '',
+		crew_id: '',
 	}) // State for new employee input
 	const [editEmployeeId, setEditEmployeeId] = useState(null) // State for the employee being edited
 	const [scheduledEmployees, setScheduledEmployees] = useState([]) // Missing state to store scheduled employees
@@ -23,9 +24,9 @@ const EmployeeManagement = () => {
 	useEffect(() => {
 		const fetchEmployees = async () => {
 			try {
-				const response = await axios.get(
-					'https://api.example.com/employees'
-				) // ! change according to your need here
+				const response = await api.get(
+					'api/employees/'
+				) 
 				// This is initial loading employees ...
 				// firstly the alloted values will be null, after the use the schedule method, it will change as discussed
 				setEmployees(response.data)
@@ -67,16 +68,16 @@ const EmployeeManagement = () => {
 	// Add a new employee via API
 	const handleAddEmployee = async () => {
 		try {
-			const response = await axios.post(
-				'https://api.example.com/employee/add',
+			const response = await api.post(
+				'api/employee/add/',
 				newEmployee
 			)
 			setEmployees([...employees, { ...response.data, id: Date.now() }]) // Assuming backend returns the new employee data
 			setNewEmployee({
-				busId: '', // Clear input fields
-				shiftStart: '',
-				shiftEnd: '',
-				crewId: '',
+				bus_id: '', // Clear input fields
+				shift_start: '',
+				shift_end: '',
+				crew_id: '',
 			})
 			setShowModal(false) // Hide modal after submission
 		} catch (error) {
@@ -84,42 +85,55 @@ const EmployeeManagement = () => {
 		}
 	}
 
-	// Edit employee details
-	const handleEditEmployee = (employee) => {
-		setNewEmployee(employee)
-		setEditEmployeeId(employee.id)
-		setShowModal(true)
-	}
+
 
 	// Delete employee from the list
-	const handleDeleteEmployee = (id) => {
-		setEmployees(employees.filter((employee) => employee.id !== id))
-	}
-
-	// Save or update employee details
-	const handleSaveEmployee = () => {
-		if (editEmployeeId !== null) {
-			setEmployees(
-				employees.map((employee) =>
-					employee.id === editEmployeeId
-						? { ...newEmployee, id: editEmployeeId }
-						: employee
-				)
-			)
-			setEditEmployeeId(null)
-		} else {
-			handleAddEmployee()
+	const handleDeleteEmployee = async (id) => {
+		try {
+			await api.delete(`api/employee/delete/${id}/`);
+			setEmployees(employees.filter((employee) => employee.id !== id));
+		} catch (error) {
+			console.error('There was an error deleting the employee!', error);
 		}
-		setShowModal(false) // Hide modal after update
-	}
+	};
+	
+
+	const handleSaveEmployee = async () => {
+		if (editEmployeeId !== null) {
+			try {
+				const response = await api.put(`api/employee/edit/${editEmployeeId}/`, newEmployee);
+				setEmployees(
+					employees.map((employee) =>
+						employee.id === editEmployeeId
+							? { ...response.data }
+							: employee
+					)
+				);
+				setEditEmployeeId(null); // Reset after saving
+			} catch (error) {
+				console.error('There was an error updating the employee!', error);
+			}
+		} else {
+			handleAddEmployee(); // Add new employee if not editing
+		}
+		setShowModal(false); // Close modal
+	};
+	
+	const handleEditEmployee = (employee) => {
+		console.log('Editing Employee:', employee.id);  // Check if employee object has valid data
+		setNewEmployee(employee);
+		setEditEmployeeId(employee.id);  // Check if employee.id is defined here
+		setShowModal(true);
+	};
+
 
 	// Open modal for adding a new employee
 	const handleAddNewEmployee = () => {
 		setNewEmployee({
-			busId: '', // Initialize input fields
-			shiftStart: '',
-			shiftEnd: '',
-			crewId: '',
+			bus_id: '', // Initialize input fields
+			shift_start: '',
+			shift_end: '',
+			crew_id: '',
 		})
 		setEditEmployeeId(null)
 		setShowModal(true)
@@ -189,7 +203,7 @@ const EmployeeManagement = () => {
 					</thead>
 					<tbody>
 						{employees.map((employee) => (
-							<tr key={employee.shift_id}>
+							<tr key={employee.id}>
 								<td>{employee.bus_id}</td>
 								<td>{employee.shift_start}</td>
 								<td>{employee.shift_end}</td>
@@ -207,7 +221,7 @@ const EmployeeManagement = () => {
 										className='delete-btn transition-transform tracking-wider active:scale-95 duration-300 px-5 py-2'
 										onClick={() =>
 											handleDeleteEmployee(
-												employee.shift_id
+												employee.id
 											)
 										}
 									>
@@ -238,36 +252,36 @@ const EmployeeManagement = () => {
 						<input
 							className='input-field'
 							type='text'
-							name='busId'
+							name='bus_id'
 							placeholder='Bus ID'
-							value={newEmployee.busId}
+							value={newEmployee.bus_id}
 							onChange={handleInputChange}
 							onKeyDown={handleKeyDown} // Handle Enter key
 						/>
 						<input
 							className='input-field'
 							type='text'
-							name='shiftStart'
+							name='shift_start'
 							placeholder='Shift Start'
-							value={newEmployee.shiftStart}
+							value={newEmployee.shift_start}
 							onChange={handleInputChange}
 							onKeyDown={handleKeyDown}
 						/>
 						<input
 							className='input-field'
 							type='text'
-							name='shiftEnd'
+							name='shift_end'
 							placeholder='Shift End'
-							value={newEmployee.shiftEnd}
+							value={newEmployee.shift_end}
 							onChange={handleInputChange}
 							onKeyDown={handleKeyDown}
 						/>
 						<input
 							className='input-field'
 							type='text'
-							name='crewId'
+							name='crew_id'
 							placeholder='Crew ID'
-							value={newEmployee.crewId}
+							value={newEmployee.crew_id}
 							onChange={handleInputChange}
 							onKeyDown={handleKeyDown}
 						/>

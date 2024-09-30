@@ -14,3 +14,13 @@ class demand_prediction_Data(models.Model):
 
     def __str__(self):
         return self.ride_id
+
+
+class Employee(models.Model):
+    bus_id = models.CharField(max_length=50)
+    shift_start = models.TimeField()
+    shift_end = models.TimeField()
+    crew_id = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"Bus {self.bus_id} - Crew {self.crew_id}"

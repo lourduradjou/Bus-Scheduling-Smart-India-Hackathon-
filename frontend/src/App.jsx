@@ -27,25 +27,25 @@ const App = () => {
 				<Route
 					path='/'
 					element={
-						//<ProtectedRoutes> {/* Ensure users are logged in */}
+						<ProtectedRoutes> {/* Ensure users are logged in */}
 
 						<MainLayout>
 							<DashBoard />
 						</MainLayout>
 
-						//</ProtectedRoutes>
+						</ProtectedRoutes>
 					}
 				/>
 				<Route
 					path='/schedulerManagement'
 					element={
-						//<ProtectedRoutes> {/* Ensure users are logged in */}
+						<ProtectedRoutes> {/* Ensure users are logged in */}
 
 						<MainLayout>
 							<EmployeeManagement />
 						</MainLayout>
 
-						//</ProtectedRoutes>
+						</ProtectedRoutes>
 					}
 				/>
 
