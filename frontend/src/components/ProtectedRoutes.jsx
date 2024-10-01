@@ -56,7 +56,7 @@ function ProtectesRoutes({ children }) {
     };
 
     if (isAuthorized === null) {
-        return <div>Loading...</div>;
+        return <div className="flex justify-center items-center w-full min-h-screen font-medium text-2xl text-indigo-600">Loading...</div>;
     }
 
     return isAuthorized ? children : <Navigate to="/login" />;
