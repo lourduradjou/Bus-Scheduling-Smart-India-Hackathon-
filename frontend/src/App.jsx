@@ -34,13 +34,13 @@ const App = () => {
 				<Route
 					path='/'
 					element={
-						//<ProtectedRoutes> {/* Ensure users are logged in */}
+						<ProtectedRoutes> {/* Ensure users are logged in */}
 
 						<MainLayout>
 							<DashBoard />
 						</MainLayout>
 
-						//</ProtectedRoutes>
+						</ProtectedRoutes>
 					}
 				/>
 				<Route
