@@ -1,5 +1,5 @@
-import DashBoardStatsGrid from '../components/DashBoardStatsGrid'
-import RevenueChart from '../components/RevenueChart'
+import DashBoardStatsGrid from '../components/DashBoardStatsGrid' //shows the statistics
+import RevenueChart from '../components/RevenueChart' //shows the revenue related details to the admin 
 
 
 export default function DashBoard() {
