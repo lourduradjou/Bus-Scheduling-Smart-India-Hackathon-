@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import busImage from '../assets/authImage/bus.jpg'; 
 import { useNavigate } from 'react-router-dom';
@@ -42,33 +41,33 @@ function Login() {
   };
 
   return (
-    <div style={styles.container} className='bg-black'>
-      <div style={styles.formContainer}>
-        <h2 style={styles.title}>LOGIN</h2>
-        <p style={styles.welcomeText}>Hi, Welcome back 👋</p>
+    // style={{ backgroundImage: `url(${busImage})` }
+    <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-gray-100" > 
+      <div className="w-full max-w-md bg-white bg-opacity-80 p-8 rounded-lg shadow-lg backdrop-blur-sm">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4 flex justify-center items-center w-full *:">LOGIN</h2>
+        {/* <p className="text-lg font-light text-gray-700 mb-8 text-center">Hi, Welcome back 👋</p> */}
 
-        
-        <form onSubmit={handleSubmit}>
-          <div style={styles.inputContainer}>
-            <label>Phone Number</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-1">
+            <label className="block text-gray-700 ml-2 my-1">Phone Number</label>
             <input
               type="text"
               placeholder="E.g. 1234567890"
-              style={styles.input}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               maxLength={30}
               required
             />
-            {phoneNumberError && <p style={styles.errorText}>{phoneNumberError}</p>}
+            {phoneNumberError && <p className="text-sm text-red-500">{phoneNumberError}</p>}
           </div>
           
-          <div style={styles.inputContainer}>
-            <label>Password</label>
+          <div className="space-y-1">
+            <label className="block text-gray-700 ml-2 my-1">Password</label>
             <input
               type="password"
               placeholder="Enter your password"
-              style={styles.input}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               minLength={6}
@@ -77,129 +76,15 @@ function Login() {
             />
           </div>
           
-          <div style={styles.optionsContainer}>
-           
-            <a href="#" style={styles.forgotPassword}>Forgot Password?</a>
+          <div className="flex justify-between items-center text-sm">
+            <a href="#" className="text-indigo-600 hover:underline">Forgot Password?</a>
           </div>
           
-          <button type="submit" style={styles.loginButton}>Login</button>
-          
-         
+          <button type="submit" className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out">Login</button>
         </form>
       </div>
     </div>
   );
 }
 
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    backgroundImage: `url(${busImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  formContainer: {
-    width: '500px',
-    padding: '40px',
-    borderRadius: '13px',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-    textAlign: 'center',
-    backdropFilter: 'blur(8px)', 
-  },
-  title: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-    color: '#fff', // White text for contrast
-  },
-  welcomeText: {
-    marginBottom: '20px',
-    fontFamily: 'Georgia, serif',
-    fontSize: '20px', 
-    fontStyle: 'italic', 
-  },
-  googleButton: {
-    width: '100%',
-    padding: '10px',
-    backgroundColor: '#4285F4',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    marginBottom: '15px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  orText: {
-    marginBottom: '20px',
-    color: '#fff',
-  },
-  inputContainer: {
-    marginBottom: '15px',
-    textAlign: 'left',
-  },
-  label: {
-    display: 'block',
-    marginBottom: '5px',
-    color: '#fff', // White text for labels
-  },
-  input: {
-    width: '100%',
-    padding: '10px',
-    borderRadius: '5px',
-    border: '1px solid #fff', // White border to blend with the background
-    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Slightly transparent input background
-    color: '#fff', // White text for input
-  },
-  optionsContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
-  },
-  rememberMeContainer: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  checkbox: {
-    marginRight: '5px',
-  },
-  rememberMeLabel: {
-    color: '#fff', // White text for Remember Me label
-  },
-  forgotPassword: {
-    textDecoration: 'none',
-    color: '#57030b',
-  },
-  loginButton: {
-    width: '100%',
-    padding: '10px',
-    backgroundColor: '#3F51B5',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    marginBottom: '20px',
-  },
-  signUpText: {
-    color: 'black',
-  },
-  signUpLink: {
-    textDecoration: 'none',
-    color: '#57030b',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: '12px',
-    marginTop: '5px',
-    textAlign: 'left',
-  },
-};
-
 export default Login;
-

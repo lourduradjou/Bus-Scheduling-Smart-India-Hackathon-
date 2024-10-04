@@ -3,7 +3,7 @@ const Footer = () => {
 	const currentYear = new Date().getFullYear() // Dynamically get the current year
 
 	return (
-		<footer className='flex flex-col md:flex-row justify-evenly items-center bg-[#0c1a42] text-slate-gray py-6 px-4'>
+		<footer className='flex flex-col md:flex-row justify-evenly items-center bg-[#0c1a42] text-slate-300 py-6 px-4'>
 			
 				<div className='ml-[17%] text-center md:text-left'>
 					<h1 className='text-lg font-bold'>Transport Department</h1>

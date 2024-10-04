@@ -1,53 +1,74 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import DashBoard from './pages/DashBoard'
-import Login from './auth/Login' // Assuming you have a login page
-import SignUp from './auth/SignUp' // Assuming you have a signup page
+
+//importing authorization related components
+import Login from './auth/Login'
+import SignUp from './auth/SignUp'
+
+//importing layout components
 import MainLayout from './components/shared/MainLayout'
-import EmployeeManagement from './pages/EmployeeManagement'
+//importing main components/features
+import SchedulerManagement from './pages/SchedulerManagement'
+import CrewDetails from './pages/CrewDetails'
+import BusDetails from './pages/BusDetails'
+import UserProfile from './auth/UserProfile'
+//importing protection related components and notfound page components
 import ProtectedRoutes from './components/ProtectedRoutes'
 import NotFound from './pages/NotFound'
 
-function RegisterAndLogout() {
-	localStorage.clear()
-	return <SignUp />
-}
+//function to clearout the logged details
+// function RegisterAndLogout() {
+// 	localStorage.clear()
+// 	return <SignUp />
+// }
 
 const App = () => {
 	return (
 		<Router>
 			<Routes>
-				{/* Public routes (without sidebar) */}
 				<Route path='/login' element={<Login />} />
-				<Route path='/signup' element={<RegisterAndLogout />} />
-
+				{/* <Route path='/signup' element={<RegisterAndLogout />} /> */}
+				<Route path='/crewDetails' element={<UserProfile />} />
 				{/* Protected routes (with sidebar) */}
 				<Route
 					path='/'
 					element={
-						//<ProtectedRoutes> {/* Ensure users are logged in */}
+						<ProtectedRoutes> {/* Ensure users are logged in */}
 
 						<MainLayout>
 							<DashBoard />
 						</MainLayout>
 
-						//</ProtectedRoutes>
+						</ProtectedRoutes>
 					}
 				/>
 				<Route
 					path='/schedulerManagement'
 					element={
-						//<ProtectedRoutes> {/* Ensure users are logged in */}
-
 						<MainLayout>
-							<EmployeeManagement />
+							<SchedulerManagement />
 						</MainLayout>
-
-						//</ProtectedRoutes>
 					}
 				/>
-
-				<Route path='*' element={<NotFound />} />
+				<Route
+					path='/crewInfo'
+					element={
+						<MainLayout>
+							<CrewDetails />
+						</MainLayout>
+					}
+				/>
+				<Route
+					path='/busInfo'
+					element={
+						<MainLayout>
+							<BusDetails />
+						</MainLayout>
+					}
+				/>
+				<Route path='*' element={<NotFound />} />{' '}
+				{/* to catch invalid urls */}
 			</Routes>
 		</Router>
 	)
