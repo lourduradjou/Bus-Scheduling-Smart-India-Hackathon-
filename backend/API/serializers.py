@@ -1,8 +1,22 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Employee
+from .models import Bus,CrewMember
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from .models import UserRole 
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        try:
+            user_role = UserRole.objects.get(user=user)
+            token['role'] = user_role.role
+            
+        except UserRole.DoesNotExist:
+            token['role'] = 'undefined'  # Default value or error handling
 
+        return token
+    
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -15,7 +29,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class EmployeeSerializer(serializers.ModelSerializer):
+class BusSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Employee
-        fields = [ 'id','bus_id', 'shift_start', 'shift_end', 'crew_id']
+        model = Bus
+        fields = '__all__'
+
+class CrewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CrewMember
+        fields = '__all__'
