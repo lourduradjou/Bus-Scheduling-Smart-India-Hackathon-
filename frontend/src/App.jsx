@@ -26,7 +26,7 @@ import NotFound from './pages/NotFound'
 const App = () => {
 	//solves the issue of unmatched active link in the local storage
 	//always opens it up in the dashboard...
-	localStorage.removeItem('activeLink') 
+	//localStorage.removeItem('activeLink') 
 	return (
 		<Router>
 			<Routes>
