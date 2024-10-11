@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // Fixed import for jwt-decode
 import api from "../api";
 import { useState, useEffect } from "react";
 
-function ProtectesRoutes({ children }) {
+function ProtectedRoutes({ children, allowedRoles }) {
     const [isAuthorized, setIsAuthorized] = useState(null);
 
     useEffect(() => {
@@ -12,7 +12,7 @@ function ProtectesRoutes({ children }) {
 
     const refreshToken = async () => {
         const refresh = localStorage.getItem("refresh");
-        if (!refreshToken) {
+        if (!refresh) {
             handleLogout();
             return;
         }
@@ -51,7 +51,13 @@ function ProtectesRoutes({ children }) {
         if (tokenExpiration < now) {
             await refreshToken();
         } else {
-            setIsAuthorized(true);
+            // Check if the user's role is allowed to access the route
+            const userRole = decoded.role; // Assuming the role is in the token
+            if (allowedRoles && !allowedRoles.includes(userRole)) {
+                setIsAuthorized(false); // Not authorized due to role
+            } else {
+                setIsAuthorized(true);
+            }
         }
     };
 
@@ -62,4 +68,4 @@ function ProtectesRoutes({ children }) {
     return isAuthorized ? children : <Navigate to="/login" />;
 }
 
-export default ProtectesRoutes;
+export default ProtectedRoutes;
