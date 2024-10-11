@@ -12,7 +12,7 @@ import MainLayout from './components/shared/MainLayout'
 import SchedulerManagement from './pages/SchedulerManagement'
 import CrewDetails from './pages/CrewDetails'
 import BusDetails from './pages/BusDetails'
-import UserProfile from './auth/UserProfile'
+import UserProfile from './auth/userProfile'
 //importing protection related components and notfound page components
 import ProtectedRoutes from './components/ProtectedRoutes'
 import NotFound from './pages/NotFound'
@@ -29,20 +29,28 @@ const App = () => {
 			<Routes>
 				<Route path='/login' element={<Login />} />
 				{/* <Route path='/signup' element={<RegisterAndLogout />} /> */}
-				<Route path='/crewDetails' element={<UserProfile />} />
+
+
+				<Route
+					path='/crewDetails'
+					element={
+							<ProtectedRoutes allowedRoles={['crew','admin']}> {/* Ensure users are logged in */}
+								<UserProfile />
+							</ProtectedRoutes>
+
+					}
+				/>
+
 				{/* Protected routes (with sidebar) */}
 				<Route
 					path='/'
 					element={
-						
-
 						<MainLayout>
-							<ProtectedRoutes> {/* Ensure users are logged in */}
-							<DashBoard />
+							<ProtectedRoutes allowedRoles={['admin']}> {/* Ensure users are logged in */}
+								<DashBoard />
 							</ProtectedRoutes>
 						</MainLayout>
 
-						
 					}
 				/>
 				<Route

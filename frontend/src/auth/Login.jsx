@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import busImage from '../assets/authImage/bus.jpg'; 
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import {jwtDecode} from 'jwt-decode';
 
 function Login() {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -34,9 +35,16 @@ function Login() {
       const res = await api.post("api/token/", { username: phoneNumber, password });
       localStorage.setItem('access', res.data.access);
       localStorage.setItem('refresh', res.data.refresh);
-      navigate("/");
+      const decoded = jwtDecode(res.data.access);
+      const userRole = decoded.role;
+      if (userRole === "crew") {
+          navigate("/crewDetails")
+      }
+      else{
+        navigate("/");
+      }
     } catch (error) {
-      alert("ENTER THE CORRECT CREDENTIALS");
+      alert(error);
     }
   };
 

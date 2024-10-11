@@ -1,45 +1,44 @@
 import React, { useState, useEffect } from 'react'
 import './EmployeeManagement.css' // Import the CSS file for styling
-import axios from 'axios' // Import axios for API requests
 import { ClipLoader } from 'react-spinners' // Loading spinner
 import api from '../api'
 
 // TODO: Adding flashcards to represent various kind of alerts , like (success/failures/errors/delays/etc)
 
 const CrewDetails = () => {
-	const [employees, setEmployees] = useState([]) // State to store employee list
+	const [crew, setCrew] = useState([]) // State to store employee list
 	const [loading, setLoading] = useState(false) // Loading state
-	const [showModal, setShowModal] = useState(false) // State to control modal visibility
-	const [newEmployee, setNewEmployee] = useState({
-		bus_id: '',
-		shift_start: '',
-		shift_end: '',
-		crew_id: '',
-	}) // State for new employee input
-	const [editEmployeeId, setEditEmployeeId] = useState(null) // State for the employee being edited
-	const [scheduledEmployees, setScheduledEmployees] = useState([]) // Missing state to store scheduled employees
+	// const [showModal, setShowModal] = useState(false) // State to control modal visibility
+	// const [newEmployee, setNewEmployee] = useState({
+	// 	bus_id: '',
+	// 	shift_start: '',
+	// 	shift_end: '',
+	// 	crew_id: '',
+	// }) // State for new employee input
+	// const [editEmployeeId, setEditEmployeeId] = useState(null) // State for the employee being edited
+	// const [scheduledEmployees, setScheduledEmployees] = useState([]) // Missing state to store scheduled employees
 
 	// Fetch employees data from backend
 	// ! work here daryl
-	// useEffect(() => {
-	// 	const fetchEmployees = async () => {
-	// 		try {
-	// 			const response = await api.get(
-	// 				'api/employees/'
-	// 			)
-	// 			// This is initial loading employees ...
-	// 			// firstly the alloted values will be null, after the use the schedule method, it will change as discussed
-	// 			// yeah that is fine!
-	// 			setEmployees(response.data)
-	// 		} catch (error) {
-	// 			console.error('Error fetching employee data!', error)
-	// 		} finally {
-	// 			setLoading(false)
-	// 		}
-	// 	}
-
-	// 	fetchEmployees()
-	// }, []) // Run once when the component mounts
+	useEffect(() => {
+		const fetchCrew = async () => {
+			try {
+				const response = await api.get(
+					'api/Crew/'
+				)
+				// This is initial loading employees ...
+				// firstly the alloted values will be null, after the use the schedule method, it will change as discussed
+				// yeah that is fine!
+				setCrew(response.data)
+			} catch (error) {
+				console.error('Error fetching employee data!', error)
+			} finally {
+				setLoading(false)
+			}
+		}
+	
+		fetchCrew()
+	}, []) // Run once when the component mounts
 
 	// // TODO: One work pending here to connect the backend rest api to send back the scheduled changes...
 	// const efficientSchedule = () => {
@@ -61,90 +60,90 @@ const CrewDetails = () => {
 	// 		.catch((err) => console.log(err))
 	// }
 
-	// Handle input change for employee form
-	const handleInputChange = (e) => {
-		setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value })
-	}
+	 // Handle input change for employee form
+	// const handleInputChange = (e) => {
+	// 	setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value })
+	// }
 
-	// Add a new employee via API
-	const handleAddEmployee = async () => {
-		try {
-			const response = await api.post('api/employee/add/', newEmployee)
-			setEmployees([...employees, { ...response.data, id: Date.now() }]) // Assuming backend returns the new employee data
-			// setNewEmployee({
-			// 	bus_id: '', // Clear input fields
-			// 	shift_start: '',
-			// 	shift_end: '',
-			// 	crew_id: '',
-			// })
-			setShowModal(false) // Hide modal after submission
-		} catch (error) {
-			console.error('There was an error adding the employee!', error)
-		}
-	}
+	// // Add a new employee via API
+	// const handleAddEmployee = async () => {
+	// 	try {
+	// 		const response = await api.post('api/employee/add/', newEmployee)
+	// 		setEmployees([...employees, { ...response.data, id: Date.now() }]) // Assuming backend returns the new employee data
+	// 		// setNewEmployee({
+	// 		// 	bus_id: '', // Clear input fields
+	// 		// 	shift_start: '',
+	// 		// 	shift_end: '',
+	// 		// 	crew_id: '',
+	// 		// })
+	// 		setShowModal(false) // Hide modal after submission
+	// 	} catch (error) {
+	// 		console.error('There was an error adding the employee!', error)
+	// 	}
+	// }
 
-	// Delete employee from the list
-	const handleDeleteEmployee = async (id) => {
-		try {
-			await api.delete(`api/employee/delete/${id}/`)
-			setEmployees(employees.filter((employee) => employee.id !== id))
-		} catch (error) {
-			console.error('There was an error deleting the employee!', error)
-		}
-	}
+	// // Delete employee from the list
+	// const handleDeleteEmployee = async (id) => {
+	// 	try {
+	// 		await api.delete(api/employee/delete/${id}/)
+	// 		setEmployees(employees.filter((employee) => employee.id !== id))
+	// 	} catch (error) {
+	// 		console.error('There was an error deleting the employee!', error)
+	// 	}
+	// }
 
-	const handleSaveEmployee = async () => {
-		if (editEmployeeId !== null) {
-			try {
-				const response = await api.put(
-					`api/employee/edit/${editEmployeeId}/`,
-					newEmployee
-				)
-				setEmployees(
-					employees.map((employee) =>
-						employee.id === editEmployeeId
-							? { ...response.data }
-							: employee
-					)
-				)
-				setEditEmployeeId(null) // Reset after saving
-			} catch (error) {
-				console.error(
-					'There was an error updating the employee!',
-					error
-				)
-			}
-		} else {
-			handleAddEmployee() // Add new employee if not editing
-		}
-		setShowModal(false) // Close modal
-	}
+	// const handleSaveEmployee = async () => {
+	// 	if (editEmployeeId !== null) {
+	// 		try {
+	// 			const response = await api.put(
+	// 				api/employee/edit/${editEmployeeId}/,
+	// 				newEmployee
+	// 			)
+	// 			setEmployees(
+	// 				employees.map((employee) =>
+	// 					employee.id === editEmployeeId
+	// 						? { ...response.data }
+	// 						: employee
+	// 				)
+	// 			)
+	// 			setEditEmployeeId(null) // Reset after saving
+	// 		} catch (error) {
+	// 			console.error(
+	// 				'There was an error updating the employee!',
+	// 				error
+	// 			)
+	// 		}
+	// 	} else {
+	// 		handleAddEmployee() // Add new employee if not editing
+	// 	}
+	// 	setShowModal(false) // Close modal
+	// }
 
-	const handleEditEmployee = (employee) => {
-		console.log('Editing Employee:', employee.id) // Check if employee object has valid data
-		setNewEmployee(employee)
-		setEditEmployeeId(employee.id) // Check if employee.id is defined here
-		setShowModal(true)
-	}
+	// const handleEditEmployee = (employee) => {
+	// 	console.log('Editing Employee:', employee.id) // Check if employee object has valid data
+	// 	setNewEmployee(employee)
+	// 	setEditEmployeeId(employee.id) // Check if employee.id is defined here
+	// 	setShowModal(true)
+	// }
 
-	// Open modal for adding a new employee
-	const handleAddNewEmployee = () => {
-		setNewEmployee({
-			bus_id: '', // Initialize input fields
-			shift_start: '',
-			shift_end: '',
-			crew_id: '',
-		})
-		setEditEmployeeId(null)
-		setShowModal(true)
-	}
+	// // Open modal for adding a new employee
+	// const handleAddNewEmployee = () => {
+	// 	setNewEmployee({
+	// 		bus_id: '', // Initialize input fields
+	// 		shift_start: '',
+	// 		shift_end: '',
+	// 		crew_id: '',
+	// 	})
+	// 	setEditEmployeeId(null)
+	// 	setShowModal(true)
+	// }
 
-	// Handle the Enter key press for form submission
-	const handleKeyDown = (e) => {
-		if (e.key === 'Enter') {
-			handleSaveEmployee()
-		}
-	}
+	// // Handle the Enter key press for form submission
+	// const handleKeyDown = (e) => {
+	// 	if (e.key === 'Enter') {
+	// 		handleSaveEmployee()
+	// 	}
+	// }
 
 	// Conditional rendering for loading before employee details where fetched
 	if (loading) {
@@ -194,24 +193,35 @@ const CrewDetails = () => {
 				<table className='employee-table'>
 					<thead>
 						<tr>
-							<th className='tracking-wider'>Crew ID</th>
+							<th className='tracking-wider'>Crew Id</th>
 							<th className='tracking-wider'>Name</th>
 							<th className='tracking-wider'>Age</th>
-							<th className='tracking-wider'>Phone</th>
+							<th className='tracking-wider'>Phone No</th>
 							<th className='tracking-wider'>Join Date</th>
 							<th className='tracking-wider'>Role</th>
-							<th className='tracking-wider'>Years Of Experience</th>
-							<th className='tracking-wider'>Assigned Bus ID</th>
+							<th className='tracking-wider'>Years of Exp</th>
+							<th className='tracking-wider'>Assigned Bus Id</th>
+							<th className='tracking-wider'>Assigned Route Id</th>
+							<th className='tracking-wider'>Shift Start Time</th>
+							<th className='tracking-wider'>Shift End Time</th>
 						</tr>
 					</thead>
 					<tbody>
-						{employees.map((employee) => (
-							<tr key={employee.id}>
-								<td>{employee.bus_id}</td>
-								<td>{employee.shift_start}</td>
-								<td>{employee.shift_end}</td>
-								<td>{employee.crew_id}</td>
-								<td className='space-x-6 mx-auto'>
+					{crew.map((crew) => (
+                           <tr key={crew.crew_id}>
+							<td>{crew.crew_id}</td>
+							<td>{crew.name}</td>
+							<td>{crew.age}</td>
+							<td>{crew.phone}</td>
+							<td>{crew.join_date}</td>
+							<td>{crew.role}</td>
+							<td>{crew.years_of_experience}</td>
+							<td>{crew.assigned_bus_id}</td>
+							<td>{crew.assigned_route_id}</td>
+							<td>{crew.shift_start_time}</td>
+							<td>{crew.shift_end_time}</td>
+           					 </tr>
+								/* <td className='space-x-6 mx-auto'>
 									<button
 										className='view-btn transition-transform duration-300 active:scale-95 tracking-wider px-5 py-2'
 										onClick={() =>
@@ -228,15 +238,15 @@ const CrewDetails = () => {
 									>
 										Delete
 									</button>
-								</td>
-							</tr>
+								</td> */
+							
 						))}
 					</tbody>
 				</table>
 			</div>
 
 			{/* Modal for Add/Edit Employee */}
-			{showModal && (
+			{/* {showModal && (
 				<div className='modal'>
 					<div className='modal-content'>
 						<span
@@ -294,7 +304,7 @@ const CrewDetails = () => {
 						</button>
 					</div>
 				</div>
-			)}
+			)} */}
 		</div>
 	)
 }
