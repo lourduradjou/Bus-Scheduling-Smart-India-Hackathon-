@@ -79,7 +79,7 @@ def save_to_file(filename, crews, buses):
 
 # Generate and save the test case
 #crews, buses
-crews, buses = generate_test_case(12000, 5000)
+crews, buses = generate_test_case(6, 3)
 save_to_file('test_cases.json', crews, buses)
 
 

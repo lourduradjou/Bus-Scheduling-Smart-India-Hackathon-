@@ -69,6 +69,7 @@ const SideBar = () => {
 	)
 	const [isSidebarOpen, setIsSidebarOpen] = useState(
 		JSON.parse(localStorage.getItem('isSidebarOpen')) ?? true
+		
 	)
 
 	useEffect(() => {

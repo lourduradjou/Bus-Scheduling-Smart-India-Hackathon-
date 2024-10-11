@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import DashBoard from './pages/DashBoard'
 
@@ -24,6 +24,9 @@ import NotFound from './pages/NotFound'
 // }
 
 const App = () => {
+	//solves the issue of unmatched active link in the local storage
+	//always opens it up in the dashboard...
+	localStorage.removeItem('activeLink') 
 	return (
 		<Router>
 			<Routes>
@@ -34,13 +37,13 @@ const App = () => {
 				<Route
 					path='/'
 					element={
-						//<ProtectedRoutes> {/* Ensure users are logged in */}
+						<ProtectedRoutes> {/* Ensure users are logged in */}
 
 						<MainLayout>
 							<DashBoard />
 						</MainLayout>
 
-						//</ProtectedRoutes>
+						</ProtectedRoutes>
 					}
 				/>
 				<Route
