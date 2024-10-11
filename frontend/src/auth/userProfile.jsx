@@ -1,6 +1,7 @@
 import React from 'react';
 
-const userProfile = () => {
+
+const UserProfile = () => {
     return (
         <div className='flex flex-col items-center min-h-screen bg-gray-100'>
             <h1 className='text-3xl font-bold text-center text-gray-800 mt-6'>
@@ -44,4 +45,5 @@ const userProfile = () => {
     );
 };
 
-export default userProfile;
+
+export default UserProfile;
