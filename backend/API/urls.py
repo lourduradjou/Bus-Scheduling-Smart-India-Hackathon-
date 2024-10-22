@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import bus_list,crew_list
+from .views import bus_list,crew_list,run_scheduling
 
 urlpatterns = [
     # path('employees/', employee_list, name='employee-list'),
@@ -8,5 +8,6 @@ urlpatterns = [
     # path('employee/delete/<int:pk>/', employee_delete, name='employee_delete'),
     path('bus/', bus_list, name='employee-list'),
     path('Crew/', crew_list, name='employee-list'),
+    path('runScheduling/', run_scheduling, name='run_scheduling'),
 
 ]

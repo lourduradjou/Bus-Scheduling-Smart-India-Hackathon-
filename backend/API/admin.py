@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import demand_prediction_Data,ScheduleManagement,Bus,CrewMember,UserRole
+from .models import demand_prediction_Data,ScheduleManagement,Bus,CrewMember,UserRole,Trip
 # Register your models here.
 
  
@@ -31,3 +31,4 @@ class UserRoleAdmin(admin.ModelAdmin):
     list_display = ('user', 'role')  # Display user and role in the list view
 
 admin.site.register(UserRole, UserRoleAdmin)
+admin.site.register(Trip) 

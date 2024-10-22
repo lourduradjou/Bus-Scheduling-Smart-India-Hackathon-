@@ -46,7 +46,18 @@ class ScheduleManagement(models.Model):
         return f"{self.bus_no} ({self.bus_id})"  # String representation of the object
 
 
+class Trip(models.Model):
+    route_id = models.CharField(max_length=255)
+    trip_id = models.CharField(max_length=255)
+    start_time = models.TimeField()  # Required field
+    end_time = models.TimeField()    # Required field
+    return_start_time = models.TimeField()  # Required field
+    return_end_time = models.TimeField()    # Required field
+    class Meta:
+        unique_together = (('route_id', 'trip_id'),)
 
+    def __str__(self):
+        return f'Trip {self.trip_id} on Route {self.route_id}'
 
 class Bus(models.Model):
     bus_id = models.AutoField(primary_key=True)  # Automatically incrementing ID

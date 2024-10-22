@@ -4,8 +4,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from .serializers import UserSerializer,BusSerializer,CustomTokenObtainPairSerializer,CrewSerializer
-from .models import Bus,CrewMember
+from .models import Bus,CrewMember,Trip
 from rest_framework_simplejwt.views import TokenObtainPairView
+from .dpScheduler import dynamic_programming_scheduling 
 
 # Create your views here.
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -83,5 +84,28 @@ def bus_list(request):
 def crew_list(request):
     crew = CrewMember.objects.all()
     serializer = CrewSerializer(crew,many=True)
+    print(serializer.data)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+def run_scheduling(request):
+    # Load or retrieve your crews, trips, and buses data
+    crews = list(CrewMember.objects.all().values())  # Convert to list of dicts
+    trips = list(Trip.objects.all().values())  # Retrieve relevant fields
+    buses = list(Bus.objects.all().values())  # Convert to list of dicts
+
+    # Run your scheduling algorithm
+    full_allocated, half_allocated, no_allocated, notAssigned, notAssignedTrips, unassignedCrews = dynamic_programming_scheduling(crews, trips, buses)
+
+    # Prepare the response data
+    response_data = {
+        'full_allocated': full_allocated,
+        'half_allocated': half_allocated,
+        'no_allocated': no_allocated,
+        'notAssigned': notAssigned,
+        'notAssignedTrips': notAssignedTrips,
+        'unassignedCrews': unassignedCrews,
+    }
+    print(response_data)
+    return Response(response_data)
