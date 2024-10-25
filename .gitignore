@@ -23,6 +23,6 @@ htmlcov/
 # Environment variables
 .env
 
-# Additional __pycache__ folders
-backend/backend/__pycache__/*.pyc
-backend/API/__pycache__/*.pyc
+# Ignore __pycache__ and migrations directories across the entire project
+**/__pycache__/
+**/migrations/
