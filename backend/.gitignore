@@ -24,5 +24,5 @@ htmlcov/
 .env
 
 # Additional __pycache__ folders
-API/__pycache__/
-backend/__pycache__/
+backend/backend/__pycache__
+backend/API/__pycache__
