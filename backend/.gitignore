@@ -6,9 +6,23 @@ __pycache__/
 venv/
 env/
 *.egg-info/
+*.egg
 
 # Django
 *.log
 *.sqlite3
+db.sqlite3
 /static/
 media/
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+
+# Environment variables
+.env
+
+# Ignore __pycache__ and migrations directories across the entire project
+**/__pycache__/
+**/migrations/
