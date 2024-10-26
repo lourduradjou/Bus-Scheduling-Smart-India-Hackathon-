@@ -13,6 +13,7 @@ import SchedulerManagement from './pages/SchedulerManagement'
 import CrewDetails from './pages/CrewDetails'
 import BusDetails from './pages/BusDetails'
 import UserProfile from './auth/userProfile'
+import GIS from './pages/GIS'
 //importing protection related components and notfound page components
 import ProtectedRoutes from './components/ProtectedRoutes'
 import NotFound from './pages/NotFound'
@@ -74,6 +75,14 @@ const App = () => {
 					element={
 						<MainLayout>
 							<BusDetails />
+						</MainLayout>
+					}
+				/>
+				<Route
+					path='/gisSystem'
+					element={
+						<MainLayout>
+							<GIS />
 						</MainLayout>
 					}
 				/>
