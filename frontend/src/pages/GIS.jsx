@@ -95,6 +95,7 @@ const GIS = () => {
 	}
 
 	const handleFileChange = (event) => {
+		setRouteCount(0)
 		const file = event.target.files[0]
 		Papa.parse(file, {
 			header: true,
@@ -118,41 +119,27 @@ const GIS = () => {
 
 	return (
 		<div>
-			<h3 className='text-blue-600 mt-2 text-center text-2xl'>
-				Multi-Route Visualization with Directions API
-			</h3>
-			<div className='flex w-full justify-center items-center'>
+			<div className='flex justify-center ml-[3%]'>
+				<h3 className='text-black mt-2 ml-[14%] text-center text-2xl bg-yellow-100 py-2 w-[50%] rounded-full '>
+					Existing Routes in Delhi
+				</h3>
+			</div>
+			<div className='flex w-full justify-evenly items-center ml-[8%] my-4'>
 				<input
-					className='m-2'
+					className='m-2 p-2 border border-gray-300 rounded-md shadow-sm hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out'
 					type='file'
 					onChange={handleFileChange}
 					accept='.csv'
 				/>
-				<select onChange={handleRouteSelection} defaultValue=''>
-					<option value='' disabled>
-						Select a route
-					</option>
-					{Object.keys(routesData).map((routeId) => (
-						<option
-							key={routeId}
-							value={routeId}
-						>{`Route ${routeId}`}</option>
-					))}
-				</select>
-				<button
-					onClick={toggleOverlapMode}
-					className='bg-yellow-100 p-4 rounded-full m-4'
-				>
-					{overlapMode
-						? 'Disable Overlap Mode'
-						: 'Enable Overlap Mode'}
-				</button>
+				<div className='text-gray-700 font-medium text-xl text-center my-4 ml-[15%]'>
+					Total Routes Plotted: {routeCount}
+				</div>
 			</div>
 			<div className='w-full flex justify-center'>
-				<div ref={mapRef} className='w-[1100px] h-[500px] rounded-md ml-[17%]' />
-			</div>10%
-			<div className='text-gray-700 font-medium text-xl text-center m-2'>
-				Total Routes Plotted: {routeCount}
+				<div
+					ref={mapRef}
+					className='w-[1100px] h-[500px] rounded-md ml-[17%]'
+				/>
 			</div>
 		</div>
 	)
