@@ -1,49 +1,24 @@
 import json
 import time
-from datetime import datetime, time
 
 class Crew:
     def __init__(self, crew_data):
         self.id = crew_data['crew_id']
-        # self.start = crew_data['shift_start_time'] if crew_data['shift_start_time'] is not None else 0  # Default to 0 if null
-        self.start = 0
-        self.end = 0
-        # self.end = crew_data['shift_end_time'] if crew_data['shift_end_time'] is not None else 24  # Default to 24 if null
-        # self.maxWork = crew_data['maxWork']  # Max hours crew can work
-        self.maxWork = 8
+        self.start = crew_data['shift_start_time'] if crew_data['shift_start_time'] is not None else 0  # Default to 0 if null
+        self.end = crew_data['shift_end_time'] if crew_data['shift_end_time'] is not None else 24  # Default to 24 if null
+        self.maxWork = crew_data['maxWork']  # Max hours crew can work
         self.role = crew_data['role']  # Conductor or Driver
         self.assigned = False  # Initially, no assignment
 
     def can_work(self, trip_start, trip_end, shift_duration):
-    # Convert integers to datetime.time if necessary
-        if isinstance(self.start, int):
-            self.start = time(self.start, 0)  # Convert to time object (hour, minute)
-        if isinstance(self.end, int):
-            self.end = time(self.end, 0)      # Convert to time object (hour, minute)
-
-        # Convert trip times to datetime.time if they are integers
-        if isinstance(trip_start, int):
-            trip_start = time(trip_start, 0)
-        if isinstance(trip_end, int):
-            trip_end = time(trip_end, 0)
-
-        # Convert to datetime for comparison
-        today = datetime.today()
-        start_dt = datetime.combine(today, self.start)
-        end_dt = datetime.combine(today, self.end)
-        trip_start_dt = datetime.combine(today, trip_start)
-        trip_end_dt = datetime.combine(today, trip_end)
-
         # Handle case where shift spans across midnight
         if self.start > self.end:  # Shift spanning midnight
-            return ((start_dt <= trip_start_dt or trip_start_dt < end_dt) and
-                    (start_dt <= trip_end_dt or trip_end_dt < end_dt) and
+            return ((self.start <= trip_start or trip_start < self.end) and
+                    (self.start <= trip_end or trip_end < self.end) and
                     self.maxWork >= shift_duration)
         else:
-            # Normal shift logic with datetime comparisons
-            return (start_dt <= trip_start_dt and 
-                    trip_end_dt <= end_dt and 
-                    self.maxWork >= shift_duration)
+            # Normal shift logic
+            return (self.start <= trip_start and trip_end <= self.end and self.maxWork >= shift_duration)
 
     def assign(self, trip_end, shift_duration):
         """Assign the crew to a shift and update their available work hours."""
@@ -69,9 +44,7 @@ def dynamic_programming_scheduling(crews, trips, buses):
 
     # Process each trip
     for trip in trips:
-        start_time = datetime.combine(datetime.today(), trip['start_time'])
-        end_time = datetime.combine(datetime.today(), trip['end_time'])
-        trip_duration =   end_time - start_time 
+        trip_duration = trip['end_time'] - trip['start_time']
         assigned_conductor = None
         assigned_driver = None
 
@@ -125,7 +98,7 @@ def dynamic_programming_scheduling(crews, trips, buses):
             unassignedCrews.append(crew.id)
 
     return full_allocated, half_allocated, no_allocated, notAssigned, notAssignedTrips, unassignedCrews
- 
+
 
 # def load_test_case(filename):
 #     with open(filename, 'r') as file:
@@ -133,7 +106,7 @@ def dynamic_programming_scheduling(crews, trips, buses):
 #     return data['crews'], data['trips'], data['buses']  # Load buses as well
 
 
-# # Load the test case from the JSON file
+# Load the test case from the JSON file
 # crews, trips, buses = load_test_case('./test_cases.json')
 
 # # Measure the running time

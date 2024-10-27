@@ -49,10 +49,10 @@ class ScheduleManagement(models.Model):
 class Trip(models.Model):
     route_id = models.CharField(max_length=255)
     trip_id = models.CharField(max_length=255)
-    start_time = models.TimeField()  # Required field
-    end_time = models.TimeField()    # Required field
-    return_start_time = models.TimeField()  # Required field
-    return_end_time = models.TimeField()    # Required field
+    start_time = models.IntegerField()  # Required field
+    end_time = models.IntegerField()    # Required field
+    return_start_time = models.IntegerField()  # Required field
+    return_end_time = models.IntegerField()    # Required field
     class Meta:
         unique_together = (('route_id', 'trip_id'),)
 
@@ -68,6 +68,8 @@ class Bus(models.Model):
     last_maintenance_date = models.DateField()     # Last maintenance date
     next_maintenance_date = models.DateField()     # Next maintenance date
     bus_status = models.CharField(max_length=20)   # Status of the bus (e.g., Active, Inactive)
+    route_id = models.IntegerField(null=True)
+    trip_id = models.IntegerField(null=True)
 
     def __str__(self):
         return f"{self.bus_no} ({self.bus_id})"  # String representation of the object
@@ -84,8 +86,10 @@ class CrewMember(models.Model):
     years_of_experience = models.PositiveIntegerField()  # Years of experience
     assigned_bus_id = models.CharField(max_length=50)    # Assigned Bus ID
     assigned_route_id = models.CharField(max_length=50)   # Assigned Route ID
-    shift_start_time = models.TimeField()               # Shift Start Time
-    shift_end_time = models.TimeField()                 # Shift End Time
+    shift_start_time = models.CharField(max_length=10,null= True)               # Shift Start Time
+    shift_end_time = models.CharField(max_length=10,null=True)                 # Shift End Time
+    maxWork = models.IntegerField()
+    assigned = models.BooleanField()
 
     def __str__(self):
         return f"{self.name} ({self.crew_id})"  # String representation of the object

@@ -195,12 +195,10 @@ const SchedulerManagement = () => {
 					<thead>
 						<tr>
 							<th>Bus ID</th>
-							<th>Bus No</th>
-							<th>Driver ID</th>
-							<th>Driver Name</th>
 							<th>Conductor ID</th>
-							<th>Conductor Name</th>
-							<th>Bus Status</th>
+							<th>Driver ID</th>
+							<th>Route ID</th>
+							<th>Trip ID</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -208,9 +206,10 @@ const SchedulerManagement = () => {
 						{employees.map((employee) => (
 							<tr key={employee.id}>
 								<td>{employee.bus_id}</td>
-								<td>{employee.shift_start}</td>
-								<td>{employee.shift_end}</td>
-								<td>{employee.crew_id}</td>
+								<td>{employee.conductor_id}</td>
+								<td>{employee.driver_id}</td>
+								<td>{employee.route_id}</td>
+								<td>{employee.trip_id}</td>
 								<td className='space-x-6 mx-auto'>
 									<button
 										className='view-btn transition-transform duration-300 active:scale-95 tracking-wider px-5 py-2'

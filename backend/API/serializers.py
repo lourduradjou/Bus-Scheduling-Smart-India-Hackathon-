@@ -37,4 +37,4 @@ class BusSerializer(serializers.ModelSerializer):
 class CrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = CrewMember
-        fields = '__all__'
+        fields = ["crew_id","name","age","phone","join_date","role","years_of_experience","assigned_bus_id","assigned_route_id","shift_start_time","shift_end_time"]

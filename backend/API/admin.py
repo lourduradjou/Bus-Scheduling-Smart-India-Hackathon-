@@ -13,6 +13,7 @@ admin.site.register(Bus, BusAdmin)
 
 class CrewMemberAdmin(admin.ModelAdmin):
     list_display = (
+        'crew_id',
         'name',
         'age',
         'phone',

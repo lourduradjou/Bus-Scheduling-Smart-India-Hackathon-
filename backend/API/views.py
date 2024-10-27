@@ -84,7 +84,6 @@ def bus_list(request):
 def crew_list(request):
     crew = CrewMember.objects.all()
     serializer = CrewSerializer(crew,many=True)
-    print(serializer.data)
     return Response(serializer.data)
 
 
@@ -108,4 +107,4 @@ def run_scheduling(request):
         'unassignedCrews': unassignedCrews,
     }
     print(response_data)
-    return Response(response_data)
+    return Response(response_data['full_allocated'])
