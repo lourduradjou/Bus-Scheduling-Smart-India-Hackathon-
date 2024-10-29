@@ -18,19 +18,15 @@ const SchedulerManagement = () => {
 	// const [editEmployeeId, setEditEmployeeId] = useState(null) // State for the employee being edited
 	// const [scheduledEmployees, setScheduledEmployees] = useState([]) // Missing state to store scheduled employees
 
-	// Fetch employees data from backend
-	// ! work here daryl
 	useEffect(() => {
 		const fetchEmployees = async () => {
 			try {
-				const response = await api.get(
-					'api/runScheduling/'
-				)
+				const response = await api.get('api/runScheduling/')
 				// This is initial loading employees ...
 				// firstly the alloted values will be null, after the use the schedule method, it will change as discussed
 				// yeah that is fine!
 				setEmployees(response.data)
-				console.log(employees)
+				console.log(response)
 			} catch (error) {
 				console.error('Error fetching employee data!', error)
 			} finally {
@@ -165,7 +161,7 @@ const SchedulerManagement = () => {
 					<h2 className='bg-slate-100 px-4 py-2 rounded-md font-semibold text-3xl '>
 						Scheduled List
 					</h2>
-					<div className='drop-shadow-2xl bg-slate-200 px-4 py-4 m-2 text-slate-200 rounded-md flex flex-col tracking-wide'>
+					{/* <div className='drop-shadow-2xl bg-slate-200 px-4 py-4 m-2 text-slate-200 rounded-md flex flex-col tracking-wide'>
 						<div className='font-semibold text-xl text-black'>
 							Auto Schedule
 						</div>
@@ -183,7 +179,7 @@ const SchedulerManagement = () => {
 								Balanced
 							</button>
 						</div>
-					</div>
+					</div> */}
 					{/* <button
 						className='add-btn bg-blue-500 mb-4 mr-2 hover:bg-blue-600 active:scale-95 duration-200'
 						onClick={handleAddNewEmployee}
@@ -194,22 +190,22 @@ const SchedulerManagement = () => {
 				<table className='employee-table'>
 					<thead>
 						<tr>
-							<th>Bus ID</th>
-							<th>Conductor ID</th>
-							<th>Driver ID</th>
 							<th>Route ID</th>
 							<th>Trip ID</th>
+							<th>Alloted Bus ID</th>
+							<th>Alloted Conductor ID</th>
+							<th>Alloted Driver ID</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{employees.map((employee) => (
 							<tr key={employee.id}>
+								<td>{employee.route_id}</td>
+								<td>{employee.trip_id}</td>
 								<td>{employee.bus_id}</td>
 								<td>{employee.conductor_id}</td>
 								<td>{employee.driver_id}</td>
-								<td>{employee.route_id}</td>
-								<td>{employee.trip_id}</td>
 								<td className='space-x-6 mx-auto'>
 									<button
 										className='view-btn transition-transform duration-300 active:scale-95 tracking-wider px-5 py-2'

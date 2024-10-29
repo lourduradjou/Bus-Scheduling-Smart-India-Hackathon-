@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .serializers import UserSerializer,BusSerializer,CustomTokenObtainPairSerializer,CrewSerializer
 from .models import Bus,CrewMember,Trip
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .dpScheduler import dynamic_programming_scheduling 
+from .dpScheduler import Scheduling 
 
 # Create your views here.
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -95,7 +95,7 @@ def run_scheduling(request):
     buses = list(Bus.objects.all().values())  # Convert to list of dicts
 
     # Run your scheduling algorithm
-    full_allocated, half_allocated, no_allocated, notAssigned, notAssignedTrips, unassignedCrews = dynamic_programming_scheduling(crews, trips, buses)
+    full_allocated, half_allocated, no_allocated, notAssigned, notAssignedTrips, unassignedCrews = Scheduling(crews, trips, buses)
 
     # Prepare the response data
     response_data = {
@@ -106,5 +106,7 @@ def run_scheduling(request):
         'notAssignedTrips': notAssignedTrips,
         'unassignedCrews': unassignedCrews,
     }
+
+    
     print(response_data)
     return Response(response_data['full_allocated'])

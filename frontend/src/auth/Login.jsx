@@ -1,27 +1,35 @@
-import React, { useState } from 'react';
-import busImage from '../assets/authImage/bus.jpg'; 
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 function Login() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
+  const navigate = useNavigate();
+
+  // Check if the user is already logged in
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access');
+    if (accessToken) {
+      const decoded = jwtDecode(accessToken);
+      const userRole = decoded.role;
+      navigate(userRole === "crew" ? "/crewDetails" : "/");
+    }
+  }, [navigate]);
 
   const validateUsername = (phoneNumber) => {
-    const usernamePattern = /^\d{10}$/; 
+    const usernamePattern = /^\d{10}$/;
     if (!usernamePattern.test(phoneNumber)) {
       return 'Please enter a valid Phone Number.';
     }
     return '';
   };
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const usernameErrorMsg = validateUsername(phoneNumber);
     if (usernameErrorMsg) {
       setPhoneNumberError(usernameErrorMsg);
@@ -37,29 +45,23 @@ function Login() {
       localStorage.setItem('refresh', res.data.refresh);
       const decoded = jwtDecode(res.data.access);
       const userRole = decoded.role;
-      if (userRole === "crew") {
-          navigate("/crewDetails")
-      }
-      else{
-        navigate("/");
-      }
+      navigate(userRole === "crew" ? "/crewDetails" : "/");
     } catch (error) {
       alert(error);
     }
   };
 
   return (
-    // style={{ backgroundImage: `url(${busImage})` }
-    <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-gray-100" > 
+    <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-gray-100"> 
       <div className="w-full max-w-md bg-white bg-opacity-80 p-8 rounded-lg shadow-lg backdrop-blur-sm">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4 flex justify-center items-center w-full *:">LOGIN</h2>
-        {/* <p className="text-lg font-light text-gray-700 mb-8 text-center">Hi, Welcome back 👋</p> */}
-
+        <h2 className="text-3xl font-bold text-gray-900 mb-4 flex justify-center items-center w-full">LOGIN</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-1">
             <label className="block text-gray-700 ml-2 my-1">Phone Number</label>
             <input
               type="text"
+              name="phoneNumber" // Name attribute for autofill
+              autoComplete="phonenumber" // Use tel for phone number
               placeholder="E.g. 1234567890"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               value={phoneNumber}
@@ -74,6 +76,7 @@ function Login() {
             <label className="block text-gray-700 ml-2 my-1">Password</label>
             <input
               type="password"
+              name="password" // Name attribute for autofill
               placeholder="Enter your password"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               value={password}

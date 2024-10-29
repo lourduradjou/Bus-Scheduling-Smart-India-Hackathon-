@@ -1,73 +1,110 @@
-import json
-import time
+# import json
+# import time
+
+"""
+    This scheduler as of now schedules the employee with the concern of rest period, but 
+    multiple duties alloted and mapping them accordingly via dates and works are remaining 
+    will do that after scheduling these works first of all.
+
+    And also the previous option of giving crew members their preferred timings where taken out and 
+    management will only provide them schedules based on the availability and need 
+    but overscheduling won't be ther maximum 8 hours of work only, as we don't have a need to go more than 8hrs inside
+    the delhi ,the computation won't exceed so yeah this will work.
+
+    If timing (schedule) goes more than 8hrs , that is 12 with round trip, we could provide them a way touse their next day duty ... 
+"""
 
 class Crew:
     def __init__(self, crew_data):
         self.id = crew_data['crew_id']
-        self.start = crew_data['shift_start_time'] if crew_data['shift_start_time'] is not None else 0  # Default to 0 if null
-        self.end = crew_data['shift_end_time'] if crew_data['shift_end_time'] is not None else 24  # Default to 24 if null
+        self.start = 0  # Default to 0 if null
+        self.end = 24  # Default to 24 if null
         self.maxWork = crew_data['maxWork']  # Max hours crew can work
         self.role = crew_data['role']  # Conductor or Driver
         self.assigned = False  # Initially, no assignment
+        self.resting = False  # Initially, not resting
+        self.bus_id = None  # For linked duties
 
-    def can_work(self, trip_start, trip_end, shift_duration):
-        # Handle case where shift spans across midnight
-        if self.start > self.end:  # Shift spanning midnight
+    def can_work(self, trip_start, trip_end, shift_duration, is_linked):
+        if self.resting:
+            return False  # If resting, can't work
+        if is_linked and self.bus_id is not None:
+            return (self.start <= trip_start and trip_end <= self.end and self.maxWork >= shift_duration)
+        elif self.start > self.end:
             return ((self.start <= trip_start or trip_start < self.end) and
-                    (self.start <= trip_end or trip_end < self.end) and
-                    self.maxWork >= shift_duration)
+                    (self.start <= trip_end or trip_end < self.end) and self.maxWork >= shift_duration)
         else:
-            # Normal shift logic
             return (self.start <= trip_start and trip_end <= self.end and self.maxWork >= shift_duration)
 
-    def assign(self, trip_end, shift_duration):
-        """Assign the crew to a shift and update their available work hours."""
+    def assign(self, bus_id, trip_end, shift_duration):
         self.assigned = True
-        self.start = trip_end  # Update the crew's start time after assignment
-        self.maxWork -= shift_duration  # Decrease remaining hours
+        self.bus_id = bus_id  # Store bus assignment for linked duty
+        self.start = trip_end
+        self.maxWork -= shift_duration
 
+    def handover(self):
+        self.bus_id = None  # Crew no longer assigned to this bus
+        self.resting = True  # Set resting status after handover
 
-def dynamic_programming_scheduling(crews, trips, buses):
-    global notAssigned, notAssignedTrips, unassignedCrews, countTrips
+    def finish_rest(self):
+        self.resting = False
+
+class Bus:
+    def __init__(self, bus_data):
+        self.id = bus_data['bus_id']
+        self.last_trip_end_time = -1  # Track when the last trip ended
+
+    def is_available(self, trip_start, rest_period):
+        if (self.last_trip_end_time == -1): #first time starting
+            return (self.last_trip_end_time + rest_period <= trip_start)
+        
+        return self.last_trip_end_time + rest_period <= trip_start
+
+def Scheduling(crews, trips, buses, rest_period=1, is_linked_duty=True):
+    global notAssigned, notAssignedTrips, unassignedCrews
     notAssigned = 0
     notAssignedTrips = []
     unassignedCrews = []
+    
+    trips.sort(key=lambda x: x['start_time'])
+    crew_objects = [Crew(crew) for crew in crews]  # Convert to crew objects
+    bus_objects = [Bus(bus) for bus in buses]  # Convert to bus objects
 
-    countTrips = len(trips)  # Number of total trips
-    trips.sort(key=lambda x: x['start_time'])  # Sort trips by start time
-
-    full_allocated = []
-    half_allocated = []
-    no_allocated = []
-
-    crew_objects = [Crew(crew) for crew in crews]  # Initialize crew objects
+    full_allocated, half_allocated, no_allocated = [], [], []
 
     # Process each trip
     for trip in trips:
         trip_duration = trip['end_time'] - trip['start_time']
-        assigned_conductor = None
-        assigned_driver = None
+        assigned_conductor, assigned_driver = None, None
+        bus_id = None
 
-        # Check each bus and crew
-        for bus in buses:
-            bus_id = bus['bus_id']  # Get bus ID
-            # Check each crew for this bus
-            for crew in crew_objects:
-                # Check if crew can work based on time
-                if crew.can_work(trip['start_time'], trip['end_time'], trip_duration):
-                    # Assign based on role
-                    if crew.role == 'conductor' and assigned_conductor is None:
-                        assigned_conductor = crew.id
-                        crew.assign(trip['end_time'], trip_duration)  # Assign crew to this trip
-                    elif crew.role == 'driver' and assigned_driver is None:
-                        assigned_driver = crew.id
-                        crew.assign(trip['end_time'], trip_duration)  # Assign crew to this trip
+        # Try to find a bus and assign crews
+        for bus in bus_objects:
+            if bus.is_available(trip['start_time'], rest_period):  # Check bus availability
+                bus_id = bus.id  # Use this bus for the trip
+                for crew in crew_objects:
+                    if crew.can_work(trip['start_time'], trip['return_end_time'], trip_duration, is_linked_duty):
+                        # Check role and assign based on linked or unlinked duty
+                        if crew.role == 'conductor' and not assigned_conductor:
+                            assigned_conductor = crew.id
+                            crew.assign(bus_id, trip['end_time'], trip_duration)
+                        elif crew.role == 'driver' and not assigned_driver:
+                            assigned_driver = crew.id
+                            crew.assign(bus_id, trip['end_time'], trip_duration)
 
-                # Break if both roles have been assigned
+                        # If unlinked duty, handle handover logic
+                        if not is_linked_duty:
+                            crew.handover()
+
+                        # Stop assigning if both roles are filled
+                        if assigned_conductor and assigned_driver:
+                            break
+
                 if assigned_conductor and assigned_driver:
+                    bus.last_trip_end_time = trip['return_end_time']  # Update bus end time
                     break
 
-        # Create assignment record
+        # Log assignments
         if assigned_conductor and assigned_driver:
             full_allocated.append({
                 'bus_id': bus_id,
@@ -92,12 +129,14 @@ def dynamic_programming_scheduling(crews, trips, buses):
                 'trip_id': trip['trip_id']
             })
 
-    # Collect unassigned crews
+    # Mark crews who are not assigned
     for crew in crew_objects:
         if not crew.assigned:
             unassignedCrews.append(crew.id)
 
     return full_allocated, half_allocated, no_allocated, notAssigned, notAssignedTrips, unassignedCrews
+
+
 
 
 # def load_test_case(filename):

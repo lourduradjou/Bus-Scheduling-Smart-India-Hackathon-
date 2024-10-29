@@ -23,9 +23,7 @@ const CrewDetails = () => {
 	useEffect(() => {
 		const fetchCrew = async () => {
 			try {
-				const response = await api.get(
-					'api/Crew/'
-				)
+				const response = await api.get('api/Crew/')
 				// This is initial loading employees ...
 				// firstly the alloted values will be null, after the use the schedule method, it will change as discussed
 				// yeah that is fine!
@@ -36,7 +34,7 @@ const CrewDetails = () => {
 				setLoading(false)
 			}
 		}
-	
+
 		fetchCrew()
 	}, []) // Run once when the component mounts
 
@@ -60,7 +58,7 @@ const CrewDetails = () => {
 	// 		.catch((err) => console.log(err))
 	// }
 
-	 // Handle input change for employee form
+	// Handle input change for employee form
 	// const handleInputChange = (e) => {
 	// 	setNewEmployee({ ...newEmployee, [e.target.name]: e.target.value })
 	// }
@@ -200,28 +198,32 @@ const CrewDetails = () => {
 							<th className='tracking-wider'>Join Date</th>
 							<th className='tracking-wider'>Role</th>
 							<th className='tracking-wider'>Years of Exp</th>
-							<th className='tracking-wider'>Assigned Bus Id</th>
-							<th className='tracking-wider'>Assigned Route Id</th>
 							<th className='tracking-wider'>Shift Start Time</th>
 							<th className='tracking-wider'>Shift End Time</th>
 						</tr>
 					</thead>
 					<tbody>
-					{crew.map((crew) => (
-                           <tr key={crew.crew_id}>
-							<td>{crew.crew_id}</td>
-							<td>{crew.name}</td>
-							<td>{crew.age}</td>
-							<td>{crew.phone}</td>
-							<td>{crew.join_date}</td>
-							<td>{crew.role}</td>
-							<td>{crew.years_of_experience}</td>
-							<td>{crew.assigned_bus_id}</td>
-							<td>{crew.assigned_route_id}</td>
-							<td>{crew.shift_start_time}</td>
-							<td>{crew.shift_end_time}</td>
-           					 </tr>
-								/* <td className='space-x-6 mx-auto'>
+						{crew.map((crew) => (
+							<tr key={crew.crew_id}>
+								<td>{crew.crew_id}</td>
+								<td>{crew.name}</td>
+								<td>{crew.age}</td>
+								<td>{crew.phone}</td>
+								<td>{crew.join_date}</td>
+								<td>{crew.role}</td>
+								<td>{crew.years_of_experience}</td>
+								<td>
+									{crew.shift_start_time
+										? crew.shift_start_time
+										: 'NA'}
+								</td>
+								<td>
+									{crew.shift_end_time
+										? crew.shift_end_time
+										: 'NA'}
+								</td>
+							</tr>
+							/* <td className='space-x-6 mx-auto'>
 									<button
 										className='view-btn transition-transform duration-300 active:scale-95 tracking-wider px-5 py-2'
 										onClick={() =>
@@ -239,7 +241,6 @@ const CrewDetails = () => {
 										Delete
 									</button>
 								</td> */
-							
 						))}
 					</tbody>
 				</table>
