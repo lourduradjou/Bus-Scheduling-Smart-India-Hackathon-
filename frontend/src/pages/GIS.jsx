@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useRef, useState } from 'react'
 import Papa from 'papaparse' //used to parse some files (csv)
 
@@ -173,3 +174,15 @@ const GIS = () => {
 }
 
 export default GIS
+=======
+import React from 'react'
+
+// ? we have to add our gis related components and complete route management stuffs here 
+// * may be we can have a seperate route analysis components also
+
+const GIS = () => {
+	return <div></div>
+}
+
+export default GIS
+>>>>>>> main
