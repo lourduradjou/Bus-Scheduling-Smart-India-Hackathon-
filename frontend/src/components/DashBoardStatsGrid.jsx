@@ -19,7 +19,7 @@ function DashboardStatsGrid() {
 	useEffect(() => {
 		// Fetch the stats from the backend API
 		axios
-			.get('https://mocki.io/v1/e67f6d02-085f-4ba4-9a3a-6c27a4c9bcf9') // Replace with your actual API endpoint
+			.get('') // Replace with your actual API endpoint
 			.then((response) => {
 				setStats(response.data)
 				console.log(response)
@@ -67,7 +67,7 @@ function DashboardStatsGrid() {
 					</span>
 					<div className='flex items-center justify-center'>
 						<strong className='text-xl  font-semibold'>
-							₹{stats.yesterdayIncome}
+							₹800
 						</strong>
 					</div>
 				</div>

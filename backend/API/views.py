@@ -7,10 +7,27 @@ from .serializers import UserSerializer,BusSerializer,CustomTokenObtainPairSeria
 from .models import Bus,CrewMember,Trip
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .dpScheduler import Scheduling 
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
 
 # Create your views here.
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+@api_view(['GET'])
+def crew_details(request, phone):
+        crew_member = CrewMember.objects.get(phone=phone)
+        serializer = CrewSerializer(crew_member)
+        # print(phone)
+        # print(serializer.data)
+        return Response(serializer.data)
+
+# @api_view(['GET'])
+# def crew_list(request):
+#     crew = CrewMember.objects.all()
+#     serializer = CrewSerializer(crew,many=True)
+#     return Response(serializer.data)
+  
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
