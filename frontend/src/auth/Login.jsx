@@ -32,24 +32,28 @@ function Login() {
 
     const usernameErrorMsg = validateUsername(phoneNumber);
     if (usernameErrorMsg) {
-      setPhoneNumberError(usernameErrorMsg);
-      return;
+        setPhoneNumberError(usernameErrorMsg);
+        return;
     }
 
     setPhoneNumberError('');
     console.log('Form submitted with:', { phoneNumber, password });
 
     try {
-      const res = await api.post("api/token/", { username: phoneNumber, password });
-      localStorage.setItem('access', res.data.access);
-      localStorage.setItem('refresh', res.data.refresh);
-      const decoded = jwtDecode(res.data.access);
-      const userRole = decoded.role;
-      navigate(userRole === "crew" ? "/crewDetails" : "/");
+        const res = await api.post("api/token/", { username: phoneNumber, password });
+        localStorage.setItem('access', res.data.access);
+        localStorage.setItem('refresh', res.data.refresh);
+        const decoded = jwtDecode(res.data.access);
+        const userRole = decoded.role;
+
+        // Navigate to crewDetails with phoneNumber in the state
+        navigate(userRole === "crew" ? "/crewDetails" : "/", {
+            state: { userNumber: phoneNumber }
+        });
     } catch (error) {
-      alert(error);
+        alert(error);
     }
-  };
+};
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-cover bg-center bg-gray-100"> 

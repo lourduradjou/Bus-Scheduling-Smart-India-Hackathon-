@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Bus,CrewMember
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import UserRole 
+from .models import UserRole, CrewMember 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -28,7 +28,6 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-
 class BusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bus
@@ -37,4 +36,6 @@ class BusSerializer(serializers.ModelSerializer):
 class CrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = CrewMember
-        fields = ["crew_id","name","age","phone","join_date","role","years_of_experience","assigned_bus_id","assigned_route_id","shift_start_time","shift_end_time"]
+        fields = ["crew_id","name","age","phone","join_date","role","years_of_experience",
+                  "assigned_bus_id","assigned_route_id","shift_start_time","shift_end_time"
+                  ]
