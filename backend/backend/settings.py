@@ -81,7 +81,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+     'postgres': { 
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'defaultdb',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_fb1wRFYUCekifztlISj',
+        'HOST': 'sih-2024-sih2024bus.h.aivencloud.com',  
+        'PORT': '20994',       
     }
+
 }
 
 
