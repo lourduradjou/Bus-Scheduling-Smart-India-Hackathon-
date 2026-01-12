@@ -1,6 +1,4 @@
-This project wasn't finished yet, but it has lot of stuffs useful for the completion of the problem existing, only map integration is remaining and ml model wasn't shared here, feel free to play with this, will update the deployed version soon!
 
-PPT which we submitted can be found above, ofcourse it is not selected in the pool among 465 participants (only 5 teams were got selected)
 
 # Automated Bus Scheduling and Route Management System for Delhi Transport Corporation
 
@@ -44,3 +42,4 @@ The project aims to develop a fully functional prototype of the Automated Bus Sc
 3. **Install the dependencies**
    ```bash
    npm install
+
